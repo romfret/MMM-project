@@ -1,0 +1,13 @@
+*~
+*target/*
+*bin/*
+*.setings/*
+.settings
+.settings/*
+.project
+.classpath
+*.metadata
+Servers
+.metadata
+.metadata/*
+Thumbs.db
