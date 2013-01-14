@@ -27,7 +27,9 @@ public class LocustaMapActivity extends MapActivity {
 	    HelloItemizedOverlay itemizedoverlay = new HelloItemizedOverlay(drawable, this);
 	    
 	    // GPS
-	    GeoPoint point = new GeoPoint(4864491, -1404406); // rennes => 48.112474, -1.678905 => a mettre en degree
+	    float lat = 48.112474f;
+	    float lng = -1.678905f;
+	    GeoPoint point = new GeoPoint((int)(lat * 1E6), (int)(lng * 1E6)); // rennes => 48.112474, -1.678905 => a mettre en degree
 	    OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
 	    
 	    itemizedoverlay.addOverlay(overlayitem);
