@@ -13,6 +13,9 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 public class LocustaMapActivity extends MapActivity {
+	
+	private List<Overlay> mapOverlays;
+	private MapItemizedOverlay barsItemizedOverlay;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -21,19 +24,15 @@ public class LocustaMapActivity extends MapActivity {
 		MapView mapView = (MapView) findViewById(R.id.mapview);
 	    mapView.setBuiltInZoomControls(true);
 	    
-	    // Icones
-	    List<Overlay> mapOverlays = mapView.getOverlays();
-	    Drawable drawable = this.getResources().getDrawable(R.drawable.ico_1);
-	    HelloItemizedOverlay itemizedoverlay = new HelloItemizedOverlay(drawable, this);
+	    // Icones Bars
+	    Drawable drawable = this.getResources().getDrawable(R.drawable.img_37);
+	    barsItemizedOverlay = new MapItemizedOverlay(drawable, this);
+
+	    // overlay's add 
+	    mapOverlays = mapView.getOverlays();
+	    mapOverlays.add(barsItemizedOverlay);
 	    
-	    // GPS
-	    float lat = 48.112474f;
-	    float lng = -1.678905f;
-	    GeoPoint point = new GeoPoint((int)(lat * 1E6), (int)(lng * 1E6)); // rennes => 48.112474, -1.678905 => a mettre en degree
-	    OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
-	    
-	    itemizedoverlay.addOverlay(overlayitem);
-	    mapOverlays.add(itemizedoverlay);
+	    addBar("La rue de la soif", "De la boisson à foison :)", 48.112474f, -1.678905f);
 	}
 
 	@Override
@@ -46,6 +45,18 @@ public class LocustaMapActivity extends MapActivity {
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
+	}
+	
+	/**
+	 * Add a new bar on map
+	 */
+	public void addBar(String name, String description, float lat, float lng) {
+
+		// GPS location
+	    GeoPoint point = new GeoPoint((int)(lat * 1E6), (int)(lng * 1E6));
+	    OverlayItem overlayitem = new OverlayItem(point, name, description);
+	    
+	    barsItemizedOverlay.addOverlay(overlayitem);
 	}
 
 }

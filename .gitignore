@@ -1,6 +1,7 @@
 *~
 *target/*
 *bin/*
+bin/*
 *.setings/*
 .settings
 .settings/*
