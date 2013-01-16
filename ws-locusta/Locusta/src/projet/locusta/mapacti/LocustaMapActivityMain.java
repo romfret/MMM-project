@@ -34,16 +34,13 @@ public class LocustaMapActivityMain extends MapActivity {
 		mapView = (MapView) findViewById(R.id.mapview);
 	    mapView.setBuiltInZoomControls(true);
 	    
-	    itemzedOverlays = new HashMap<Integer, MapItemizedOverlay>();
-	    
-	    // Icones Bars
-	    Drawable drawable = this.getResources().getDrawable(R.drawable.img_37);
-	    itemzedOverlays.put(37, new MapItemizedOverlay(drawable, this));
+	    // Add item's icons in a Map
+	    itemzedOverlays = new ItemizedOverlaysInitialization().init(this);
 	    
 	    // overlay's add 
 	    mapOverlays = mapView.getOverlays();
 	    
-	    // Ad items to map
+	    // Add items to map
 	    for (MapItemizedOverlay item : itemzedOverlays.values()) {
 			mapOverlays.add(item);
 		}
