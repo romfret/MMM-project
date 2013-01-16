@@ -23,6 +23,7 @@ public class SampleClientForAndroid {
 
 			ServicesUser servicesUser = (ServicesUser) initialContext
 					.lookup("locusta");
+			// ou ServicesEvent
 
 			System.out.println("Connexion établie");
 
