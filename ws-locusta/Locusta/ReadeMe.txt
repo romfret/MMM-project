@@ -1,0 +1,4 @@
+Importer le projet en tant que projet Eandroid existant.
+Renommer le répertoire en Locusta si ce n'est déjà fait à l'import.
+Vérifier dans les options Android que la variable Build Target Project est bien sur Google APIs 2.2 Level 8.
+Vérifer dans le build path que le package entities du serveur est bien ajouté aux sources et à l'export lors de la compilation.
