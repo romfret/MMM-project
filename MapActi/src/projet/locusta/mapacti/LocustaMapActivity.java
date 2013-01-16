@@ -1,6 +1,14 @@
 package projet.locusta.mapacti;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import locusta.project.entities.Event;
+import locusta.project.entities.User;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,7 +23,7 @@ import com.google.android.maps.OverlayItem;
 public class LocustaMapActivity extends MapActivity {
 	
 	private List<Overlay> mapOverlays;
-	private MapItemizedOverlay barsItemizedOverlay;
+	private Map<Integer, MapItemizedOverlay> itemzedOverlays;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +32,29 @@ public class LocustaMapActivity extends MapActivity {
 		MapView mapView = (MapView) findViewById(R.id.mapview);
 	    mapView.setBuiltInZoomControls(true);
 	    
+	    itemzedOverlays = new HashMap<Integer, MapItemizedOverlay>();
+	    
 	    // Icones Bars
 	    Drawable drawable = this.getResources().getDrawable(R.drawable.img_37);
-	    barsItemizedOverlay = new MapItemizedOverlay(drawable, this);
-
+	    itemzedOverlays.put(37, new MapItemizedOverlay(drawable, this));
+	    
 	    // overlay's add 
 	    mapOverlays = mapView.getOverlays();
-	    mapOverlays.add(barsItemizedOverlay);
 	    
-	    addBar("La rue de la soif", "De la boisson à foison :)", 48.112474f, -1.678905f);
+	    // Ad items to map
+	    for (MapItemizedOverlay item : itemzedOverlays.values()) {
+			mapOverlays.add(item);
+		}
+	    
+	    Date d = new Date();
+	    User u = new User("userName", "pass");
+	    
+	    Event rennes = new Event("La rue de la soif", "De la boisson à foison :)", d, -1.678905f, 48.112474f, u);
+	    rennes.getEventType().setId(37);
+	    
+	    Collection<Event> events = new ArrayList<Event>();
+	    events.add(rennes);
+	    addEvents(events);
 	}
 
 	@Override
@@ -48,15 +70,18 @@ public class LocustaMapActivity extends MapActivity {
 	}
 	
 	/**
-	 * Add a new bar on map
+	 * Add events on the map
+	 * @param events
 	 */
-	public void addBar(String name, String description, float lat, float lng) {
-
-		// GPS location
-	    GeoPoint point = new GeoPoint((int)(lat * 1E6), (int)(lng * 1E6));
-	    OverlayItem overlayitem = new OverlayItem(point, name, description);
-	    
-	    barsItemizedOverlay.addOverlay(overlayitem);
+	public void addEvents(Collection<Event> events) {
+		for (Event event : events) {
+			itemzedOverlays.get(event.getEventType().getId()).addOverlay(createOverlayItem(event));
+		}
+	}
+	
+	private OverlayItem createOverlayItem(Event event) {
+		GeoPoint point = new GeoPoint((int)(event.getLatitude() * 1E6), (int)(event.getLongitude() * 1E6));
+	    return new OverlayItem(point, event.getName(), event.getDescription());
 	}
 
 }

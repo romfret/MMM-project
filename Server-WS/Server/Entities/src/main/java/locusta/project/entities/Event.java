@@ -74,13 +74,15 @@ public class Event implements Serializable {
 
     
     public Event() {
-    	
+    	eventType = new EventType();
     }
 
     /* This constructor use only the non nullable fields */
 	public Event(String name, String description, Date startDate,
 			double longitude, double latitude, User owner) {
 		super();
+		eventType = new EventType();
+		
 		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
