@@ -79,6 +79,8 @@ public class SampleClientForAndroid {
 		// But this is *not recommended*.
 		Hashtable<String, Object> env = new Hashtable<String, Object>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, getInitialContextFactory());
+		
+		env.put(Context.PROVIDER_URL, "smart://88.176.4.252:2503");
 
 		// Usually a simple new InitialContext() without any parameters is
 		// sufficent.
