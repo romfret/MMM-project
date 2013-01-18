@@ -35,6 +35,11 @@ public class MapItemizedOverlay extends ItemizedOverlay {
 	    populate();
 	}
 	
+	public void clearOverlays() {
+		mOverlays.clear();
+		populate();
+	}
+	
 	@Override
 	protected boolean onTap(int index) {
 	  OverlayItem item = mOverlays.get(index);

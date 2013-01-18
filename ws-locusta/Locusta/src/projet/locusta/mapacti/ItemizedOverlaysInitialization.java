@@ -18,10 +18,14 @@ public class ItemizedOverlaysInitialization {
 		
 		
 		// Icones Bars
-	    Drawable drawable = locustaMapActivityMain.getResources().getDrawable(R.drawable.img_37);
-	    itemzedOverlays.put(37, new MapItemizedOverlay(drawable, locustaMapActivityMain));
+	    Drawable drawable37 = locustaMapActivityMain.getResources().getDrawable(R.drawable.img_37);
+	    itemzedOverlays.put(37, new MapItemizedOverlay(drawable37, locustaMapActivityMain));
 		
-		
+	    // Icones Restaurants
+	    Drawable drawable39 = locustaMapActivityMain.getResources().getDrawable(R.drawable.img_39);
+	    itemzedOverlays.put(39, new MapItemizedOverlay(drawable39, locustaMapActivityMain));
+	    
+	    
 		
 		return itemzedOverlays;
 	}
