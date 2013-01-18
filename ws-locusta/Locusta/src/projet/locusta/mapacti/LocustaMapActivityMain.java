@@ -9,6 +9,7 @@ import java.util.Map;
 import locusta.project.entities.Event;
 import locusta.project.entities.User;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -104,6 +105,8 @@ public class LocustaMapActivityMain extends MapActivity {
 		case R.id.menu_current_location :
 			Location currentLocation = geolocalisationService.getLocation();
 
+			showToast(LocationManager.GPS_PROVIDER);
+			
 			String msg = String.format(
 					getResources().getString(R.string.display_current_location), currentLocation.getLatitude(),
 					currentLocation.getLongitude());
