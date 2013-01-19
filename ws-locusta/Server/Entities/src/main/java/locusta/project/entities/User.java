@@ -1,4 +1,3 @@
-
 package locusta.project.entities;
 
 import java.io.Serializable;
@@ -12,131 +11,144 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-
+import javax.persistence.ManyToMany;
 
 /**
  * A JPA 2.0 Entity.
  */
 @Entity
-public class User implements Serializable {
+public class User implements Serializable, IEntity {
 
+	private static final long serialVersionUID = -7448829558275268188L;
 
-    private static final long serialVersionUID = -7448829558275268188L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int _id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+	@Column(nullable = false, unique = true)
+	private String _userName;
 
-    @Column(nullable=false, unique=true)
-    private String userName;
-    
-    /*
-	 *	Please hash the password (with MD5 for example)
-     *  before set the variable 
-     */  
-    @Column(nullable=false)
-    private String hashedPass;
-    
-    @Column(nullable=true)
-    private double longitude;
-    
-    @Column(nullable=true)
-    private double latitude;
-    
-    /*
-     * No REMOVE CascadeType to
-     * avoid accidental deletions friends
-     */
-    @JoinColumn
-    @OneToMany(cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch=FetchType.LAZY)
-    private Set<User> friends;
-    
-    /*
-     * We don't need a list of events in user because
-     * an event contains already a user. So, just create a request
-     * to search the user events (the user is indexed on event in DBB)
-     */
-    
-    public User() {
-    	friends = new HashSet<User>();
-    }
-    
+	/*
+	 * Please hash the password (with MD5 for example) before set the variable
+	 */
+	@Column(nullable = false)
+	private String _hashedPass;
+
+	@Column(nullable = true)
+	private double _longitude;
+
+	@Column(nullable = true)
+	private double _latitude;
+
+	/*
+	 * No REMOVE CascadeType to avoid accidental deletions friends
+	 */
+	@ManyToMany(cascade = { CascadeType.DETACH }, fetch = FetchType.EAGER)
+	private Set<User> _friends;
+
+	/*
+	 * We don't need a list of events in user because an event contains already
+	 * a user. So, just create a request to search the user events (the user is
+	 * indexed on event in DBB)
+	 */
+
+	public User() {
+		_friends = new HashSet<User>();
+	}
+
 	public User(String userName, String hashedPass) {
 		super();
-		this.userName = userName;
-		this.hashedPass = hashedPass;
+		this._userName = userName;
+		this._hashedPass = hashedPass;
 	}
-	
+
 	public User(String userName, String hashedPass, double longitude,
 			double latitude) {
 		super();
-		this.userName = userName;
-		this.hashedPass = hashedPass;
-		this.longitude = longitude;
-		this.latitude = latitude;
+		this._userName = userName;
+		this._hashedPass = hashedPass;
+		this._longitude = longitude;
+		this._latitude = latitude;
 	}
 
 	public int getId() {
-		return id;
+		return _id;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this._id = id;
 	}
 
 	public String getUserName() {
-		return userName;
+		return _userName;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this._userName = userName;
 	}
 
 	public String getHashedPass() {
-		return hashedPass;
+		return _hashedPass;
 	}
 
 	public void setHashedPass(String hashedPass) {
-		this.hashedPass = hashedPass;
+		this._hashedPass = hashedPass;
 	}
 
 	public double getLongitude() {
-		return longitude;
+		return _longitude;
 	}
 
 	public void setLongitude(double longitude) {
-		this.longitude = longitude;
+		this._longitude = longitude;
 	}
 
 	public double getLatitude() {
-		return latitude;
+		return _latitude;
 	}
 
 	public void setLatitude(double latitude) {
-		this.latitude = latitude;
+		this._latitude = latitude;
 	}
 
 	public Set<User> getFriends() {
-		return friends;
+		return _friends;
 	}
 
 	public void setFriends(Set<User> friends) {
-		this.friends = friends;
+		this._friends = friends;
 	}
-	
+
 	public void addFriend(User user) {
-		this.friends.add(user);
-	}
-	
-	public void removeFriend(User user){
-		this.friends.remove(user);
+		this._friends.add(user);
 	}
 
+	public void removeFriend(User user) {
+		this._friends.remove(user);
+	}
 
-	
-	
-    
-    
+	public IEntity cloneForJson() {
+		return clone(1);
+	}
+
+	public IEntity clone(int depthFriend) {
+		User newUser = new User(this._userName, this._hashedPass);
+		newUser.setId(this._id);
+		newUser.setLatitude(this._latitude);
+		newUser.setLongitude(this._longitude);
+
+		if (depthFriend > 0) {
+			Set<User> newFriends = new HashSet<User>();
+			--depthFriend;
+			if (this._friends != null) {
+
+				for (User friend : this.getFriends())
+					newFriends.add((User) friend.clone(depthFriend));
+			}
+			newUser.setFriends(newFriends);
+		}
+
+		return newUser;
+	}
+
 }

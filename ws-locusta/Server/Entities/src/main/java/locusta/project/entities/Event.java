@@ -1,4 +1,3 @@
-
 package locusta.project.entities;
 
 import java.io.Serializable;
@@ -15,176 +14,163 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
-
 /**
  * A JPA 2.0 Entity.
  */
 @Entity
-public class Event implements Serializable {
+public class Event implements Serializable, IEntity {
 
+	private static final long serialVersionUID = -7448829558275268188L;
 
-    private static final long serialVersionUID = -7448829558275268188L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int _id;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+	@Column(nullable = false)
+	private String _name;
 
-    @Column(nullable=false)
-    private String name;
-    
-    /*
-	 *	Please hash the password (with MD5 for example)
-     *  before set the variable 
-     */  
-    @Column(nullable=true)
-    private String description;
-    
-    @Column(nullable=false)
-    private Date startDate;
-    
-    /* Per default : 1 hour after startDate seems good */
-    @Column(nullable=false)
-    private Date endDate;
-    
-    @Column(nullable=false)
-    private double longitude;
-    
-    @Column(nullable=false)
-    private double latitude;
-    
-    /* 
-     * nullable is true, it is explicitly the default type event
-     * EAGER fetch because it's only one value and it's important
-     * No REMOVE CascadeType to
-     * avoid accidental deletions of type
-     */    
-    @JoinColumn(nullable=true)
-    @OneToOne(cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch=FetchType.EAGER)
-    EventType eventType;
-    
-    /* 
-     * nullable is false because an event must have a user!
-     * EAGER fetch because it's only one value and it's important
-     * No REMOVE CascadeType to
-     * avoid accidental deletions of type
-     */    
-    @JoinColumn(nullable=false)
-    @OneToOne(cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch=FetchType.EAGER)
-    User owner;
+	/*
+	 * Please hash the password (with MD5 for example) before set the variable
+	 */
+	@Column(nullable = true)
+	private String _description;
 
-    
-    public Event() {
-    	eventType = new EventType();
-    }
+	@Column(nullable = false)
+	private Date _startDate;
 
-    /* This constructor use only the non nullable fields */
+	/* Per default : 1 hour after startDate seems good */
+	@Column(nullable = false)
+	private Date _endDate;
+
+	@Column(nullable = false)
+	private double _longitude;
+
+	@Column(nullable = false)
+	private double _latitude;
+
+	/*
+	 * nullable is true, it is explicitly the default type event EAGER fetch
+	 * because it's only one value and it's important No REMOVE CascadeType to
+	 * avoid accidental deletions of type
+	 */
+	@JoinColumn(nullable = true)
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE,
+			CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	EventType _eventType;
+
+	/*
+	 * nullable is false because an event must have a user! EAGER fetch because
+	 * it's only one value and it's important No REMOVE CascadeType to avoid
+	 * accidental deletions of type
+	 */
+	@JoinColumn(nullable = false)
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE,
+			CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	User _owner;
+
+	public Event() {
+		_eventType = new EventType();
+	}
+
+	/* This constructor use only the non nullable fields */
 	public Event(String name, String description, Date startDate,
 			double longitude, double latitude, User owner) {
 		super();
-		eventType = new EventType();
-		
-		this.name = name;
-		this.description = description;
-		this.startDate = startDate;
-		
-		Calendar cal = Calendar.getInstance();
-	    cal.setTime(this.startDate); 
-	    cal.add(Calendar.HOUR_OF_DAY, 1); 	    
-		this.endDate = cal.getTime();
-				
-		this.longitude = longitude;
-		this.latitude = latitude;
-		this.owner = owner;
-	}
+		_eventType = new EventType();
 
+		this._name = name;
+		this._description = description;
+		this._startDate = startDate;
+
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(this._startDate);
+		cal.add(Calendar.HOUR_OF_DAY, 1);
+		this._endDate = cal.getTime();
+
+		this._longitude = longitude;
+		this._latitude = latitude;
+		this._owner = owner;
+	}
 
 	public int getId() {
-		return id;
+		return _id;
 	}
-
 
 	public void setId(int id) {
-		this.id = id;
+		this._id = id;
 	}
-
 
 	public String getName() {
-		return name;
+		return _name;
 	}
-
 
 	public void setName(String name) {
-		this.name = name;
+		this._name = name;
 	}
-
 
 	public String getDescription() {
-		return description;
+		return _description;
 	}
-
 
 	public void setDescription(String description) {
-		this.description = description;
+		this._description = description;
 	}
-
 
 	public Date getStartDate() {
-		return startDate;
+		return _startDate;
 	}
-
 
 	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+		this._startDate = startDate;
 	}
-
 
 	public Date getEndDate() {
-		return endDate;
+		return _endDate;
 	}
-
 
 	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+		this._endDate = endDate;
 	}
-
 
 	public double getLongitude() {
-		return longitude;
+		return _longitude;
 	}
-
 
 	public void setLongitude(double longitude) {
-		this.longitude = longitude;
+		this._longitude = longitude;
 	}
-
 
 	public double getLatitude() {
-		return latitude;
+		return _latitude;
 	}
-
 
 	public void setLatitude(double latitude) {
-		this.latitude = latitude;
+		this._latitude = latitude;
 	}
-
 
 	public EventType getEventType() {
-		return eventType;
+		return _eventType;
 	}
-
 
 	public void setEventType(EventType eventType) {
-		this.eventType = eventType;
+		this._eventType = eventType;
 	}
-
 
 	public User getOwner() {
-		return owner;
+		return _owner;
 	}
 
-
 	public void setOwner(User owner) {
-		this.owner = owner;
-	}   
-    
+		this._owner = owner;
+	}
+
+	public IEntity cloneForJson() {
+		Event newEvent = new Event(this._name, this._description,
+				this._startDate, this._longitude, this._latitude,
+				(User) this._owner.cloneForJson());
+		newEvent.setEndDate(this._endDate);
+		newEvent.setEventType((EventType) this._eventType.cloneForJson());
+		return newEvent;
+	}
+
 }
