@@ -31,14 +31,12 @@ public class Event implements IEntity {
 	User _owner;
 
 	public Event() {
-		_eventType = new EventType();
 	}
 
 	/* This constructor use only the non nullable fields */
 	public Event(String name, String description, Date startDate,
 			double longitude, double latitude, User owner) {
 		super();
-		_eventType = new EventType();
 
 		this._name = name;
 		this._description = description;

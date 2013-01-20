@@ -100,8 +100,9 @@ public class ServicesBean implements Services {
 	}
 
 	public Event addEvent(Event event) {
-		if (getUserById(event.getId()) != null)
+		if (getEventById(event.getId()) != null)
 			return null;
+	
 		entityManager.persist(event);
 		return event;
 	}
@@ -111,6 +112,7 @@ public class ServicesBean implements Services {
 		Query query = entityManager.createQuery("SELECT e " + "FROM Event e "
 				+ "WHERE e._name LIKE '%" + somethingLikeThat
 				+ "%' ORDER BY e._name");
+		
 		return (List<Event>) query.getResultList();
 	}
 

@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -74,7 +75,7 @@ public class WebServer {
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public void handle(HttpExchange t) throws IOException {
 			String who = t.getRemoteAddress().toString();
-			System.out.println("Received client request : "
+			System.out.println("Receiving client request : "
 					+ who);
 			// Initialisation
 			JsonFactory jsonFactory = new JsonFactory();
@@ -90,13 +91,13 @@ public class WebServer {
 				System.err.println(who + ": Broken request: " + requestBody);
 				return;
 			}
-
+			System.out.print(who + ": Request body:" + requestBody);
 			System.out.println(who + ": Reading...");
 			// Lecture du nom de la méthode à appeler
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode rootNode = mapper.readTree(jp);
 			if (rootNode == null) {
-				System.err.println(who + ":This user don't know what he wants!");
+				System.err.println(who + ": This user don't know what he wants!");
 				return;
 			}
 			JsonNode methodNameNode = rootNode.get("methodName");

@@ -54,8 +54,7 @@ public class Event implements Serializable, IEntity {
 	 * avoid accidental deletions of type
 	 */
 	@JoinColumn(nullable = true)
-	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE,
-			CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	EventType _eventType;
 
 	/*
@@ -64,19 +63,17 @@ public class Event implements Serializable, IEntity {
 	 * accidental deletions of type
 	 */
 	@JoinColumn(nullable = false)
-	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE,
-			CascadeType.PERSIST, CascadeType.REFRESH }, fetch = FetchType.EAGER)
+	@OneToOne(cascade = { CascadeType.DETACH, CascadeType.REFRESH }, fetch = FetchType.EAGER)
 	User _owner;
 
 	public Event() {
-		_eventType = new EventType();
+		_eventType = null;
 	}
 
 	/* This constructor use only the non nullable fields */
 	public Event(String name, String description, Date startDate,
 			double longitude, double latitude, User owner) {
 		super();
-		_eventType = new EventType();
 
 		this._name = name;
 		this._description = description;
@@ -169,7 +166,8 @@ public class Event implements Serializable, IEntity {
 				this._startDate, this._longitude, this._latitude,
 				(User) this._owner.cloneForJson());
 		newEvent.setEndDate(this._endDate);
-		newEvent.setEventType((EventType) this._eventType.cloneForJson());
+		if (_eventType != null)
+			newEvent.setEventType((EventType) this._eventType.cloneForJson());
 		return newEvent;
 	}
 
