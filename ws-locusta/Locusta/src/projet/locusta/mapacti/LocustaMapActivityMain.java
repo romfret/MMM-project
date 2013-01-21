@@ -1,13 +1,17 @@
 package projet.locusta.mapacti;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import locusta.project.entities.Event;
-import locusta.project.entities.User;
+import locusta.project.entitiesAndroid.Event;
+import locusta.project.entitiesAndroid.EventType;
+import locusta.project.entitiesAndroid.User;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -66,10 +70,14 @@ public class LocustaMapActivityMain extends MapActivity {
 	    User u = new User("userName", "pass");
 	    
 	    Event rennes = new Event("La rue de la soif", "De la boisson à foison :)", d, -1.678905f, 48.112474f, u);
-	    rennes.getEventType().setId(37);
+	    EventType eventType = new EventType("Bars");
+	    eventType.setId(37);
+	    rennes.setEventType(eventType);
 	    
 	    Event rennesBouffe = new Event("La rue de la bouffe", "De la bouffe à foison :)", d, -1.681255f, 48.105397f, u);
-	    rennesBouffe.getEventType().setId(39);
+	    EventType eventType2 = new EventType("Restaurant");
+	    eventType2.setId(39);
+	    rennesBouffe.setEventType(eventType2);
 	    
 	    Collection<Event> events = new ArrayList<Event>();
 	    events.add(rennes);
@@ -111,6 +119,29 @@ public class LocustaMapActivityMain extends MapActivity {
 					getResources().getString(R.string.display_current_location), currentLocation.getLatitude(),
 					currentLocation.getLongitude());
 			
+			
+			
+			// TODO
+//			Geocoder geo = new Geocoder(this);
+//			String msg = "";
+//			try {
+//				List<Address> addresses = geo.getFromLocation(currentLocation.getAltitude(), currentLocation.getLatitude(), 1);
+//				
+//				if(addresses != null && addresses.size() == 1) {
+//					Address address = addresses.get(0);
+//					msg = String.format("%s, %s %s",	address.getAddressLine(0), address.getPostalCode(),	address.getLocality());
+//				}
+//				else {
+//					msg = "No address was found !";
+//				}
+//				
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+			
+			
+			
+			
 			Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 		default:
 			System.out.println("Menu id unrecognized");
@@ -129,6 +160,14 @@ public class LocustaMapActivityMain extends MapActivity {
 		for (Event event : events) {
 			itemzedOverlays.get(event.getEventType().getId()).addOverlay(createOverlayItem(event));
 		}
+	}
+	
+	/**
+	 * Add only one event on the map
+	 * @param event
+	 */
+	public void addEvent(Event event) {
+		itemzedOverlays.get(event.getEventType().getId()).addOverlay(createOverlayItem(event));
 	}
 	
 	private OverlayItem createOverlayItem(Event event) {
