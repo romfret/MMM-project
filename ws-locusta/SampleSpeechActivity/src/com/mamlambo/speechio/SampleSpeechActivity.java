@@ -39,102 +39,103 @@ import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class SampleSpeechActivity extends Activity implements OnInitListener {
 
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+	}
 
-    /** Called when the activity is first created. */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-    }
-    
-    // speech synthesis
-    
-    private TextToSpeech mTextToSpeech = null;
-//    private boolean speechSynthReady = false;
-    
-    
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
+	// speech synthesis
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+	private TextToSpeech mTextToSpeech = null;
 
+	// private boolean speechSynthReady = false;
 
-    public void listenToMe(String text) {
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
 
-        mTextToSpeech = new TextToSpeech(getApplicationContext(), this);
-        //if (!speechSynthReady) {
-           // Toast.makeText(getApplicationContext(),"Speech Synthesis not ready.", Toast.LENGTH_SHORT).show();
-         //   return;
-       // }
-        int result = mTextToSpeech.setLanguage(Locale.FRANCE);
-        if (result == TextToSpeech.LANG_MISSING_DATA
-                || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-            Toast.makeText(
-                    getApplicationContext(),
-                    "Language not available. Check code or config in settings.",
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-        }
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}
 
-        mTextToSpeech.shutdown();
-        mTextToSpeech = null;
+	public void listenToMe(String text) {
 
-    }
-    
-    @Override
-    public void onInit(int status) {
-//        if (status == TextToSpeech.SUCCESS) {
-//            speechSynthReady = true;
-//        }
-    }
+		mTextToSpeech = new TextToSpeech(getApplicationContext(), this);
+		// if (!speechSynthReady) {
+		// Toast.makeText(getApplicationContext(),"Speech Synthesis not ready.",
+		// Toast.LENGTH_SHORT).show();
+		// return;
+		// }
+		int result = mTextToSpeech.setLanguage(Locale.FRANCE);
+		if (result == TextToSpeech.LANG_MISSING_DATA
+				|| result == TextToSpeech.LANG_NOT_SUPPORTED) {
+			Toast.makeText(
+					getApplicationContext(),
+					"Language not available. Check code or config in settings.",
+					Toast.LENGTH_SHORT).show();
+		} else {
+			mTextToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+		}
 
-    
-    // Speech recognition
-    private static final int VOICE_RECOGNITION_REQUEST = 0x10101;
-    
-    public void speakToMe(View view) {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                "Please speak slowly and enunciate clearly.");
-        startActivityForResult(intent, VOICE_RECOGNITION_REQUEST);
-    }
+		mTextToSpeech.shutdown();
+		mTextToSpeech = null;
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	if(resultCode != RESULT_OK && requestCode == VOICE_RECOGNITION_REQUEST )
-    		return;
-        if (requestCode == VOICE_RECOGNITION_REQUEST && resultCode == RESULT_OK) {
-            ArrayList<String> matches = data
-                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            TextView textView = (TextView) findViewById(R.id.speech_io_text);
-            String firstMatch = matches.get(0);
-            listenToMe(firstMatch);
-            textView.setText(firstMatch);
-        }
-        speakToMe(null);
-    }
-    
-    private void parseText(String text){
-    	//if(text.startsWith("ajouter")){
-    		System.out.println("tante");
-    		TextToSpeech mTextToSpeech2 = new TextToSpeech(getApplicationContext(), this);
-    		mTextToSpeech2.setLanguage(Locale.FRANCE);
-            mTextToSpeech2.speak("evenement reconnu", TextToSpeech.QUEUE_FLUSH, null);
-    	//}
-    }
+	}
+
+	@Override
+	public void onInit(int status) {
+		// if (status == TextToSpeech.SUCCESS) {
+		// speechSynthReady = true;
+		// }
+	}
+
+	// Speech recognition
+	private static final int VOICE_RECOGNITION_REQUEST = 0x10101;
+
+	public void speakToMe(View view) {
+		System.out.println("speaktome");
+		startService(new Intent(this, SpeakerService.class));
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+		intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+				"Please speak slowly and enunciate clearly.");
+		startActivityForResult(intent, VOICE_RECOGNITION_REQUEST);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != RESULT_OK && requestCode == VOICE_RECOGNITION_REQUEST)
+			return;
+		if (requestCode == VOICE_RECOGNITION_REQUEST && resultCode == RESULT_OK) {
+			ArrayList<String> matches = data
+					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+			TextView textView = (TextView) findViewById(R.id.speech_io_text);
+			String firstMatch = matches.get(0);
+			textView.setText(firstMatch);
+		}
+	}
+
+	private void parseText(String text) {
+		if (text.startsWith("ajouter")) {
+			System.out.println("tante");
+			TextToSpeech mTextToSpeech2 = new TextToSpeech(
+					getApplicationContext(), this);
+			mTextToSpeech2.setLanguage(Locale.FRANCE);
+			mTextToSpeech2.speak("evenement reconnu", TextToSpeech.QUEUE_FLUSH,
+					null);
+		}
+	}
 
 }
