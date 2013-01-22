@@ -17,12 +17,9 @@ public interface Services {
 
 	public Event getEventById(int id);
 
-	// Because there can be many events with the same name
-	public List<Event> searchEvents(String somethingLikeThat);
-
 	// Radius in meters
 	public List<Event> lookEventsAround(double longitude, double latitude,
-			double radius);
+			double radius, EventType eventType);
 
 	public EventType addEventType(String name);
 

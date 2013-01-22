@@ -10,3 +10,4 @@
 Servers
 .metadata
 .metadata/*
+*.class*

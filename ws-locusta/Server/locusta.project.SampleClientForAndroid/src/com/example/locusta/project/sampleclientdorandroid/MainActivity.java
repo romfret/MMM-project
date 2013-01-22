@@ -6,6 +6,7 @@ import locusta.project.entitiesAndroid.User;
 import locusta.project.webClient.WebClient;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;

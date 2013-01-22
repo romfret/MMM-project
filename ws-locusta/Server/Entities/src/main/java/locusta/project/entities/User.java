@@ -23,28 +23,28 @@ public class User implements Serializable, IEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int _id;
+	private int id;
 
 	@Column(nullable = false, unique = true)
-	private String _userName;
+	private String userName;
 
 	/*
 	 * Please hash the password (with MD5 for example) before set the variable
 	 */
 	@Column(nullable = false)
-	private String _hashedPass;
+	private String pass;
 
 	@Column(nullable = true)
-	private double _longitude;
+	private double lon;
 
 	@Column(nullable = true)
-	private double _latitude;
+	private double lat;
 
 	/*
 	 * No REMOVE CascadeType to avoid accidental deletions friends
 	 */
 	@ManyToMany(cascade = { CascadeType.DETACH }, fetch = FetchType.EAGER)
-	private Set<User> _friends;
+	private Set<User> friends;
 
 	/*
 	 * We don't need a list of events in user because an event contains already
@@ -53,78 +53,78 @@ public class User implements Serializable, IEntity {
 	 */
 
 	public User() {
-		_friends = new HashSet<User>();
+		friends = new HashSet<User>();
 	}
 
-	public User(String userName, String hashedPass) {
+	public User(String userName, String pass) {
 		super();
-		this._userName = userName;
-		this._hashedPass = hashedPass;
+		this.userName = userName;
+		this.pass = pass;
 	}
 
-	public User(String userName, String hashedPass, double longitude,
-			double latitude) {
+	public User(String userName, String hashedPass, double lon,
+			double lat) {
 		super();
-		this._userName = userName;
-		this._hashedPass = hashedPass;
-		this._longitude = longitude;
-		this._latitude = latitude;
+		this.userName = userName;
+		this.pass = hashedPass;
+		this.lon = lon;
+		this.lat = lat;
 	}
 
 	public int getId() {
-		return _id;
+		return id;
 	}
 
 	public void setId(int id) {
-		this._id = id;
+		this.id = id;
 	}
 
 	public String getUserName() {
-		return _userName;
+		return userName;
 	}
 
 	public void setUserName(String userName) {
-		this._userName = userName;
+		this.userName = userName;
 	}
 
-	public String getHashedPass() {
-		return _hashedPass;
+	public String getPass() {
+		return pass;
 	}
 
-	public void setHashedPass(String hashedPass) {
-		this._hashedPass = hashedPass;
+	public void setPass(String pass) {
+		this.pass = pass;
 	}
 
-	public double getLongitude() {
-		return _longitude;
+	public double getLon() {
+		return lon;
 	}
 
-	public void setLongitude(double longitude) {
-		this._longitude = longitude;
+	public void setLon(double lon) {
+		this.lon = lon;
 	}
 
-	public double getLatitude() {
-		return _latitude;
+	public double getLat() {
+		return lat;
 	}
 
-	public void setLatitude(double latitude) {
-		this._latitude = latitude;
+	public void setLat(double lat) {
+		this.lat = lat;
 	}
 
 	public Set<User> getFriends() {
-		return _friends;
+		return friends;
 	}
 
 	public void setFriends(Set<User> friends) {
-		this._friends = friends;
+		this.friends = friends;
 	}
 
 	public void addFriend(User user) {
-		this._friends.add(user);
+		this.friends.add(user);
 	}
 
 	public void removeFriend(User user) {
-		this._friends.remove(user);
+		this.friends.remove(user);
 	}
 
 	public IEntity cloneForJson() {
@@ -132,15 +132,15 @@ public class User implements Serializable, IEntity {
 	}
 
 	public IEntity clone(int depthFriend) {
-		User newUser = new User(this._userName, this._hashedPass);
-		newUser.setId(this._id);
-		newUser.setLatitude(this._latitude);
-		newUser.setLongitude(this._longitude);
+		User newUser = new User(this.userName, this.pass);
+		newUser.setId(this.id);
+		newUser.setLat(this.lat);
+		newUser.setLon(this.lon);
 
 		if (depthFriend > 0) {
 			Set<User> newFriends = new HashSet<User>();
 			--depthFriend;
-			if (this._friends != null) {
+			if (this.friends != null) {
 
 				for (User friend : this.getFriends())
 					newFriends.add((User) friend.clone(depthFriend));

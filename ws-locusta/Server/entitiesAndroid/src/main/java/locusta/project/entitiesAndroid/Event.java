@@ -1,129 +1,126 @@
 package locusta.project.entitiesAndroid;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-public class Event implements IEntity {
+
+public class Event implements Serializable {
 
 
-	private int _id;
-
-	private String _name;
-
-	/*
-	 * Please hash the password (with MD5 for example) before set the variable
+	/**
+	 * 
 	 */
+	private static final long serialVersionUID = -1148258706503362545L;
 
-	private String _description;
+	private int id;
 
-	private Date _startDate;
+	private String name;
 
-	/* Per default : 1 hour after startDate seems good */
+	private String description;
 
-	private Date _endDate;
+	private Date startDate;
 
-	private double _longitude;
+	private Date endDate;
+	private double lon;
+	private double lat;
 
-	private double _latitude;
+	EventType eventType;
 
-	EventType _eventType;
-
-	User _owner;
+	User owner;
 
 	public Event() {
+		eventType = null;
 	}
 
-	/* This constructor use only the non nullable fields */
 	public Event(String name, String description, Date startDate,
-			double longitude, double latitude, User owner) {
+			double lon, double lat, User owner) {
 		super();
 
-		this._name = name;
-		this._description = description;
-		this._startDate = startDate;
+		this.name = name;
+		this.description = description;
+		this.startDate = startDate;
 
 		Calendar cal = Calendar.getInstance();
-		cal.setTime(this._startDate);
-		cal.add(Calendar.HOUR_OF_DAY, 1);
-		this._endDate = cal.getTime();
+		cal.setTime(this.startDate);
+		cal.add(Calendar.HOUR_OF_DAY, 24);
+		this.endDate = cal.getTime();
 
-		this._longitude = longitude;
-		this._latitude = latitude;
-		this._owner = owner;
+		this.lon = lon;
+		this.lat = lat;
+		this.owner = owner;
 	}
 
 	public int getId() {
-		return _id;
+		return id;
 	}
 
 	public void setId(int id) {
-		this._id = id;
+		this.id = id;
 	}
 
 	public String getName() {
-		return _name;
+		return name;
 	}
 
 	public void setName(String name) {
-		this._name = name;
+		this.name = name;
 	}
 
 	public String getDescription() {
-		return _description;
+		return description;
 	}
 
 	public void setDescription(String description) {
-		this._description = description;
+		this.description = description;
 	}
 
 	public Date getStartDate() {
-		return _startDate;
+		return startDate;
 	}
 
 	public void setStartDate(Date startDate) {
-		this._startDate = startDate;
+		this.startDate = startDate;
 	}
 
 	public Date getEndDate() {
-		return _endDate;
+		return endDate;
 	}
 
 	public void setEndDate(Date endDate) {
-		this._endDate = endDate;
+		this.endDate = endDate;
 	}
 
 	public double getLongitude() {
-		return _longitude;
+		return lon;
 	}
 
-	public void setLongitude(double longitude) {
-		this._longitude = longitude;
+	public void setLongitude(double lon) {
+		this.lon = lon;
 	}
 
-	public double getLatitude() {
-		return _latitude;
+	public double getLat() {
+		return lat;
 	}
 
-	public void setLatitude(double latitude) {
-		this._latitude = latitude;
+	public void setLat(double lat) {
+		this.lat = lat;
 	}
 
 	public EventType getEventType() {
-		return _eventType;
+		return eventType;
 	}
 
 	public void setEventType(EventType eventType) {
-		this._eventType = eventType;
+		this.eventType = eventType;
 	}
 
 	public User getOwner() {
-		return _owner;
+		return owner;
 	}
 
 	public void setOwner(User owner) {
-		this._owner = owner;
+		this.owner = owner;
 	}
-
-	
 
 }

@@ -21,10 +21,10 @@ public class EventType implements Serializable, IEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int _id;
+    private int id;
 
     @Column(nullable=false, unique=true)
-    private String _name;
+    private String name;
     
     public EventType() {
 
@@ -32,28 +32,28 @@ public class EventType implements Serializable, IEntity {
 
 	public EventType(String name) {
 		super();
-		this._name = name;
+		this.name = name;
 	}
 	
 	public int getId() {
-		return _id;
+		return id;
 	}
 
 	public void setId(int id) {
-		this._id = id;
+		this.id = id;
 	}
 
 	public String getName() {
-		return _name;
+		return name;
 	}
 
 	public void setName(String name) {
-		this._name = name;
+		this.name = name;
 	}
 	
 	public IEntity cloneForJson() {
-		EventType newEventType = new EventType(this._name);
-		newEventType.setId(this._id);
+		EventType newEventType = new EventType(this.name);
+		newEventType.setId(this.id);
 		return newEventType;
 	}
 

@@ -1,12 +1,20 @@
 
 package locusta.project.entitiesAndroid;
 
+import java.io.Serializable;
 
-public class EventType implements IEntity {
 
-    private int _id;
 
-    private String _name;
+public class EventType implements Serializable {
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3255256095273782354L;
+
+	private int id;
+
+    private String name;
     
     public EventType() {
 
@@ -14,24 +22,24 @@ public class EventType implements IEntity {
 
 	public EventType(String name) {
 		super();
-		this._name = name;
+		this.name = name;
 	}
 	
 	public int getId() {
-		return _id;
+		return id;
 	}
 
 	public void setId(int id) {
-		this._id = id;
+		this.id = id;
 	}
 
 	public String getName() {
-		return _name;
+		return name;
 	}
 
 	public void setName(String name) {
-		this._name = name;
+		this.name = name;
 	}
-
+	
     
 }

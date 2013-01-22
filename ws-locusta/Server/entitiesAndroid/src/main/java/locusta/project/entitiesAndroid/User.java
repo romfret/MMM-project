@@ -1,95 +1,99 @@
 package locusta.project.entitiesAndroid;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-public class User implements  IEntity {
 
-	private int _id;
+public class User implements Serializable {
 
-	private String _userName;
-	private String _hashedPass;
+	private static final long serialVersionUID = -7448829558275268188L;
 
 
-	private double _longitude;
+	private int id;
+
+	private String userName;
 
 
-	private double _latitude;
+	private String pass;
+	private double lon;
 
-	private Set<User> _friends;
+	private double lat;
+
+	private Set<User> friends;
 
 	public User() {
-		_friends = new HashSet<User>();
+		friends = new HashSet<User>();
 	}
 
-	public User(String userName, String hashedPass) {
+	public User(String userName, String pass) {
 		super();
-		this._userName = userName;
-		this._hashedPass = hashedPass;
+		this.userName = userName;
+		this.pass = pass;
 	}
 
-	public User(String userName, String hashedPass, double longitude,
-			double latitude) {
+	public User(String userName, String hashedPass, double lon,
+			double lat) {
 		super();
-		this._userName = userName;
-		this._hashedPass = hashedPass;
-		this._longitude = longitude;
-		this._latitude = latitude;
+		this.userName = userName;
+		this.pass = hashedPass;
+		this.lon = lon;
+		this.lat = lat;
 	}
 
 	public int getId() {
-		return _id;
+		return id;
 	}
 
 	public void setId(int id) {
-		this._id = id;
+		this.id = id;
 	}
 
 	public String getUserName() {
-		return _userName;
+		return userName;
 	}
 
 	public void setUserName(String userName) {
-		this._userName = userName;
+		this.userName = userName;
 	}
 
-	public String getHashedPass() {
-		return _hashedPass;
+	public String getPass() {
+		return pass;
 	}
 
-	public void setHashedPass(String hashedPass) {
-		this._hashedPass = hashedPass;
+	public void setPass(String pass) {
+		this.pass = pass;
 	}
 
-	public double getLongitude() {
-		return _longitude;
+	public double getLon() {
+		return lon;
 	}
 
-	public void setLongitude(double longitude) {
-		this._longitude = longitude;
+	public void setLon(double lon) {
+		this.lon = lon;
 	}
 
-	public double getLatitude() {
-		return _latitude;
+	public double getLat() {
+		return lat;
 	}
 
-	public void setLatitude(double latitude) {
-		this._latitude = latitude;
+	public void setLat(double lat) {
+		this.lat = lat;
 	}
 
 	public Set<User> getFriends() {
-		return _friends;
+		return friends;
 	}
 
 	public void setFriends(Set<User> friends) {
-		this._friends = friends;
+		this.friends = friends;
 	}
 
 	public void addFriend(User user) {
-		this._friends.add(user);
+		this.friends.add(user);
 	}
 
 	public void removeFriend(User user) {
-		this._friends.remove(user);
+		this.friends.remove(user);
 	}
 
 }

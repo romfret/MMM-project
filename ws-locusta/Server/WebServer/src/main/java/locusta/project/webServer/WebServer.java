@@ -93,7 +93,7 @@ public class WebServer {
 			}
 			System.out.print(who + ": Request body:" + requestBody);
 			System.out.println(who + ": Reading...");
-			// Lecture du nom de la mÃ©thode Ã  appeler
+			// Lecture du nom de la méthode à  appeler
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode rootNode = mapper.readTree(jp);
 			if (rootNode == null) {
@@ -109,12 +109,11 @@ public class WebServer {
 			Method method = null;
 			System.out.println(who + ": ...want to call : " + methodName + "(...)");
 
-			// Recherche de la mÃ©thode sur le serveur et attribution
+			// Recherche de la méthode sur le serveur et attribution
 			for (Method m : Services.class.getMethods()) {
 				if (m.getName().equals(methodName))
 					method = m;
 			}
-
 			if (method == null) {
 				System.err
 						.println(who + ": You try to call a unknown function on the server: "
@@ -123,13 +122,14 @@ public class WebServer {
 				return;
 			}
 
-			// Composition des paramÃ¨tres
+			// Composition des paramètres
 			List<Object> parameters = new ArrayList<Object>();
 			JsonNode paramsNode = rootNode.path("parameters");
 			if (paramsNode == null) {
 				System.err.println(who + ": parameters field missing: " + requestBody);
 				return;
 			}
+		
 			Iterator<JsonNode> paramsIterable = paramsNode.getElements();
 			for (Class param : method.getParameterTypes()) {
 				if (paramsIterable.hasNext() == false) {
@@ -137,28 +137,15 @@ public class WebServer {
 							.println(who + ": Not enough arguments to call function!");
 					return;
 				}
+
 				parameters.add(mapper.readValue(paramsIterable.next(), param));
-
-				/*
-				 * if(param.getSimpleName() == "Boolean")
-				 * parameters.add(paramsNode.get(cmptArgs).asBoolean()); else
-				 * if(param.getSimpleName() == "Integer")
-				 * parameters.add(paramsNode.get(cmptArgs).asInt()); else
-				 * if(param.getSimpleName() == "Long")
-				 * parameters.add(paramsNode.get(cmptArgs).asLong()); else
-				 * if(param.getSimpleName() == "String")
-				 * parameters.add(paramsNode.get(cmptArgs).asText()); else
-				 * if(param.getSimpleName() == "Double")
-				 * parameters.add(paramsNode.get(cmptArgs).asDouble()); else
-				 * if(param.getSimpleName() == "User") parameters.add((User)
-				 * mapper.readValue(paramsNode.get(cmptArgs), User.class));
-				 */
-
 			}
-
+			
+		
 			Object result = null;
 			try {
 				result = method.invoke(services, parameters.toArray());
+			
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 				return;
@@ -172,8 +159,9 @@ public class WebServer {
 
 			// Conversions...
 			String response = "null";
+			
 			try {				
-				if (result != null && result instanceof IEntity) {
+				if (result != null && result instanceof IEntity) {					
 					response = mapper.writeValueAsString(((IEntity) result)
 							.cloneForJson());					
 				}
@@ -185,7 +173,7 @@ public class WebServer {
 					
 				}
 				else 
-					response = mapper.writeValueAsString(result);
+					response = mapper.writeValueAsString(result);	
 			} catch (JsonGenerationException e) {
 				e.printStackTrace();
 			} catch (JsonMappingException e) {

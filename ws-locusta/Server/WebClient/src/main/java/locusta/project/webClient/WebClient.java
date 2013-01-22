@@ -6,11 +6,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import locusta.project.entitiesAndroid.Event;
 import locusta.project.entitiesAndroid.EventType;
@@ -44,9 +40,9 @@ public class WebClient {
 	}
 
 	public Event addEvent(Event event) {
-		Map<String, String> params = new HashMap<String, String>();
+		List<String> params = new ArrayList<String>();
 		try {
-			params.put("event", mapper.writeValueAsString(event));
+			params.add(mapper.writeValueAsString(event));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 			return null;
@@ -62,9 +58,9 @@ public class WebClient {
 	}
 
 	public Event getEventById(int id) {
-		Map<String, String> params = new HashMap<String, String>();
+		List<String> params = new ArrayList<String>();
 		try {
-			params.put("id", mapper.writeValueAsString(id));
+			params.add(mapper.writeValueAsString(id));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 			return null;
@@ -79,36 +75,21 @@ public class WebClient {
 		return (Event) call("getEventById", params, Event.class);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Event> searchEvents(String somethingLikeThat) {
-		Map<String, String> params = new HashMap<String, String>();
-		try {
-			params.put("somethingLikeThat",
-					mapper.writeValueAsString(somethingLikeThat));
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-			return null;
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-
-		return (ArrayList<Event>) callGeneric("searchEvents", params,
-				new TypeReference<ArrayList<Event>>() {
-				});
+	public List<Event> lookEventsAround(double longitude, double latitude,
+			double radius) {
+		return lookEventsAround(longitude, latitude, radius, null);
 	}
+	
 
 	@SuppressWarnings("unchecked")
 	public List<Event> lookEventsAround(double longitude, double latitude,
-			double radius) {
-		Map<String, String> params = new HashMap<String, String>();
+			double radius, EventType eventType) {
+		List<String> params = new ArrayList<String>();
 		try {
-			params.put("longitude", mapper.writeValueAsString(longitude));
-			params.put("latitude", mapper.writeValueAsString(latitude));
-			params.put("radius", mapper.writeValueAsString(radius));
+			params.add( mapper.writeValueAsString(longitude));
+			params.add( mapper.writeValueAsString(latitude));
+			params.add( mapper.writeValueAsString(radius));
+			params.add( mapper.writeValueAsString(eventType));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 			return null;
@@ -126,9 +107,9 @@ public class WebClient {
 	}
 
 	public EventType addEventType(String name) {
-		Map<String, String> params = new HashMap<String, String>();
+		List<String> params = new ArrayList<String>();
 		try {
-			params.put("name", mapper.writeValueAsString(name));
+			params.add(mapper.writeValueAsString(name));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 			return null;
@@ -145,7 +126,7 @@ public class WebClient {
 
 	@SuppressWarnings("unchecked")
 	public List<EventType> getEventTypes() {
-		Map<String, String> params = new HashMap<String, String>();
+		List<String> params = new ArrayList<String>();
 
 		return (ArrayList<EventType>) callGeneric("getEventTypes", params,
 				new TypeReference<ArrayList<EventType>>() {
@@ -153,9 +134,9 @@ public class WebClient {
 	}
 
 	public User userRegistration(User user) {
-		Map<String, String> params = new HashMap<String, String>();
+		List<String> params = new ArrayList<String>();
 		try {
-			params.put("user", mapper.writeValueAsString(user));
+			params.add(mapper.writeValueAsString(user));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 			return null;
@@ -171,9 +152,9 @@ public class WebClient {
 	}
 
 	public String encryptPassword(String password) {
-		Map<String, String> params = new HashMap<String, String>();
+		List<String> params = new ArrayList<String>();
 		try {
-			params.put("password", mapper.writeValueAsString(password));
+			params.add(mapper.writeValueAsString(password));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 			return null;
@@ -189,9 +170,9 @@ public class WebClient {
 	}
 
 	public User getUserById(int id) {
-		Map<String, String> params = new HashMap<String, String>();
+		List<String> params = new ArrayList<String>();
 		try {
-			params.put("id", mapper.writeValueAsString(id));
+			params.add(mapper.writeValueAsString(id));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 			return null;
@@ -207,9 +188,9 @@ public class WebClient {
 	}
 
 	public User getUserByUserName(String userName) {
-		Map<String, String> params = new HashMap<String, String>();
+		List<String> params = new ArrayList<String>();
 		try {
-			params.put("userName", mapper.writeValueAsString(userName));
+			params.add(mapper.writeValueAsString(userName));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 			return null;
@@ -226,10 +207,9 @@ public class WebClient {
 
 	@SuppressWarnings("unchecked")
 	public List<User> searchUsers(String somethingLikeThat) {
-		Map<String, String> params = new HashMap<String, String>();
+		List<String> params = new ArrayList<String>();
 		try {
-			params.put("somethingLikeThat",
-					mapper.writeValueAsString(somethingLikeThat));
+			params.add(mapper.writeValueAsString(somethingLikeThat));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 			return null;
@@ -247,9 +227,9 @@ public class WebClient {
 	}
 
 	public void updateUser(User user) {
-		Map<String, String> params = new HashMap<String, String>();
+		List<String> params = new ArrayList<String>();
 		try {
-			params.put("user", mapper.writeValueAsString(user));
+			params.add(mapper.writeValueAsString(user));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 			return;
@@ -265,7 +245,7 @@ public class WebClient {
 
 	}
 
-	private Object callGeneric(String nameMethod, Map<String, String> params,
+	private Object callGeneric(String nameMethod, List<String> params,
 			TypeReference<?> typeReference) {
 
 		String jsonResult = sendRequest(nameMethod, params);
@@ -282,7 +262,7 @@ public class WebClient {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Object call(String nameMethod, Map<String, String> params,
+	private Object call(String nameMethod, List<String> params,
 			@SuppressWarnings("rawtypes") Class returnClass) {
 
 		String jsonResult = sendRequest(nameMethod, params);
@@ -301,7 +281,7 @@ public class WebClient {
 		return null;
 	}
 
-	private String sendRequest(String nameMethod, Map<String, String> params) {
+	private String sendRequest(String nameMethod, List<String> params) {
 		HttpPost request;
 		try {
 			request = new HttpPost("http://localhost:8000/locusta/services");
@@ -313,8 +293,9 @@ public class WebClient {
 		String json;
 		json = "{\"methodName\":\"" + nameMethod + "\", \"parameters\": {";
 		if (params.size() > 0) {
-			for (Entry<String, String> entry : params.entrySet())
-				json += "\"" + entry.getKey() + "\":" + entry.getValue() + ", ";
+			int countP = 0;
+			for (String value : params)
+				json += "\"" + "p" + countP++ + "\":" + value + ", ";
 			json = json.substring(0, json.length() - 2);
 		}
 		json += "}}";
@@ -358,19 +339,25 @@ public class WebClient {
 
 		// User toto = wc.userRegistration(new User("toto", "toto"));
 		// User titi = wc.userRegistration(new User("titi", "titi"));
-		 User toto = wc.getUserById(1);
-		// EventType et1 = wc.addEventType("cinéma");
-		List<EventType> let = wc.getEventTypes();
-		EventType et1 = let.get(0);
-		 Event e1 = new Event("event1", "descr1", new Date(), -1.659966,
-		 48.101929, toto);
-		 Event e2 = new Event("event2", "descr2", new Date(), -1.635761,
-		 48.121815, toto);
-
-		 e1.setEventType(et1);
-		 wc.addEvent(e1);
-		 wc.addEvent(e2);
-		//
+//		 User toto = wc.getUserById(1);
+//		// EventType et1 = wc.addEventType("cinéma");
+//		List<EventType> let = wc.getEventTypes();
+//		EventType et1 = let.get(0);
+//		 Event e1 = new Event("event1", "descr1", new Date(), -1.659966,
+//		 48.101929, toto);
+//		 Event e2 = new Event("event2", "descr2", new Date(), -1.635761,
+//		 48.121815, toto);
+////
+//		 e1.setEventType(et1);
+//		 wc.addEvent(e1);
+//		 wc.addEvent(e2);
+		
+	//	Event e = wc.getEventById(1);
+	//System.out.println(e.getDescription());
+		
+		List<Event> events = wc.lookEventsAround(-1.661124, 48.102674, 130);
+		System.out.println(events.size());
+////		//
 		// User titi = wc.getUserByUserName("titi");
 		// toto.addFriend(titi);
 		// wc.updateUser(toto);

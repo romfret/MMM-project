@@ -61,7 +61,7 @@ public class ServicesBean implements Services {
 	public User getUserById(int id) {
 		try {
 			Query query = entityManager.createQuery("SELECT u "
-					+ "FROM User u " + "WHERE u._id = " + id);
+					+ "FROM User u " + "WHERE u.id = " + id);
 			return (User) query.getSingleResult();
 		} catch (Exception e) {
 			return null;
@@ -71,9 +71,8 @@ public class ServicesBean implements Services {
 	public User getUserByUserName(String userName) {
 		User user = null;
 		try {
-			Query query = entityManager
-					.createQuery("SELECT u " + "FROM User u "
-							+ "WHERE u._userName = '" + userName + "'");
+			Query query = entityManager.createQuery("SELECT u "
+					+ "FROM User u " + "WHERE u.userName = '" + userName + "'");
 			user = (User) query.getSingleResult();
 		} catch (Exception e) {
 
@@ -84,15 +83,15 @@ public class ServicesBean implements Services {
 	@SuppressWarnings("unchecked")
 	public List<User> searchUsers(String somethingLikeThat) {
 		Query query = entityManager.createQuery("SELECT u " + "FROM User u "
-				+ "WHERE u._userName LIKE '%" + somethingLikeThat
-				+ "%' ORDER BY u._userName");
+				+ "WHERE u.userName LIKE '%" + somethingLikeThat
+				+ "%' ORDER BY u.userName");
 		return (List<User>) query.getResultList();
 	}
 
 	public Event getEventById(int id) {
 		try {
 			Query query = entityManager.createQuery("SELECT e "
-					+ "FROM Event e " + "WHERE e._id = " + id);
+					+ "FROM Event e " + "WHERE e.id = " + id);
 			return (Event) query.getSingleResult();
 		} catch (Exception e) {
 			return null;
@@ -102,43 +101,35 @@ public class ServicesBean implements Services {
 	public Event addEvent(Event event) {
 		if (getEventById(event.getId()) != null)
 			return null;
-	
+
 		entityManager.persist(event);
 		return event;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Event> searchEvents(String somethingLikeThat) {
-		Query query = entityManager.createQuery("SELECT e " + "FROM Event e "
-				+ "WHERE e._name LIKE '%" + somethingLikeThat
-				+ "%' ORDER BY e._name");
 		
-		return (List<Event>) query.getResultList();
-	}
-
 	public List<Event> lookEventsAround(double longitude, double latitude,
-			double radius /* in meters */) {
+			double radius /* in meters */, EventType eventType) {
+		String query = "";
 
-		TypedQuery<Object[]> query = entityManager
-				.createQuery(
-						"SELECT e,  ((ACOS(SIN("
-								+ latitude
-								+ " * PI() / 180) * SIN(e._latitude * PI() / 180) + COS("
-								+ latitude
-								+ " * PI() / 180) * COS(e._latitude * PI() / 180) * COS(("
-								+ longitude
-								+ " – e._longitude) * PI() / 180)) * 180 / PI()) * 6366000) as distance"
-								+ "FROM Event e " + "WHERE distance <= "
-								+ radius + " " + "ORDER BY distance",
-						Object[].class);
 
-		List<Object[]> result = (List<Object[]>) query.getResultList();
+		
+		query += "SELECT e "
+				+ "FROM Event e, EventType et " 
+				+ "WHERE (ACOS(COS(" + latitude + " * PI() / 180) * COS(e.lat * PI() / 180) * COS("
+				+ "e.lon * PI() / 180 - " + longitude + " * PI() / 180) + ("
+				+ "SIN(" + latitude + " * PI() / 180) * SIN(e.lat * PI() / 180)))"
+				+ " * 6371000) <= " + radius + " AND "
+				+ "e.endDate > now() AND e.startDate < now()" ;
+		if (eventType != null) {
+			query += " AND " + "e.eventType_id = et._id and et._id = "
+					+ eventType.getId();
+		}
+		
+		TypedQuery<Event> tquery = entityManager.createQuery(query,
+				Event.class);
 
-		List<Event> events = new ArrayList<Event>();
-		for (Object[] objs : result)
-			events.add((Event) objs[1]);
+		return (List<Event>) tquery.getResultList();
 
-		return events;
 
 	}
 
@@ -156,7 +147,7 @@ public class ServicesBean implements Services {
 	@SuppressWarnings("unchecked")
 	public EventType addEventType(String name) {
 		Query query = entityManager.createQuery("SELECT et "
-				+ "FROM EventType et " + "WHERE LOWER(et._name) = '"
+				+ "FROM EventType et " + "WHERE LOWER(et.name) = '"
 				+ name.toLowerCase() + "'");
 		List<EventType> listET = (List<EventType>) query.getResultList();
 		if (listET.size() > 0)
@@ -171,7 +162,7 @@ public class ServicesBean implements Services {
 	@SuppressWarnings("unchecked")
 	public List<EventType> getEventTypes() {
 		Query query = entityManager.createQuery("SELECT et "
-				+ "FROM EventType et ORDER BY et._name");
+				+ "FROM EventType et ORDER BY et.name");
 		return (List<EventType>) query.getResultList();
 	}
 
@@ -187,20 +178,21 @@ public class ServicesBean implements Services {
 	public void updateUser(User user) {
 		if (getUserById(user.getId()) == null)
 			return;
-		
-			User realUser = getUserById(user.getId());
-			realUser.setUserName(user.getUserName());
-			realUser.setHashedPass(user.getHashedPass());
-			realUser.setLongitude(user.getLongitude());
-			realUser.setLatitude(user.getLatitude());
-			realUser.getFriends().clear();
-			for(User u: user.getFriends()) {
-				User ru = getUserById(u.getId());
-				if (ru != null) realUser.addFriend(ru);
-			}				
-			entityManager.persist(realUser);
-			entityManager.flush();
-	
+
+		User realUser = getUserById(user.getId());
+		realUser.setUserName(user.getUserName());
+		realUser.setPass(user.getPass());
+		realUser.setLon(user.getLon());
+		realUser.setLat(user.getLat());
+		realUser.getFriends().clear();
+		for (User u : user.getFriends()) {
+			User ru = getUserById(u.getId());
+			if (ru != null)
+				realUser.addFriend(ru);
+		}
+		entityManager.persist(realUser);
+		entityManager.flush();
+
 	}
 
 }
