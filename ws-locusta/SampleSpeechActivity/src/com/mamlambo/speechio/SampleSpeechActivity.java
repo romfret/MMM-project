@@ -33,6 +33,8 @@ package com.mamlambo.speechio;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import locusta.project.webClient.WebClient;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -51,13 +53,15 @@ public class SampleSpeechActivity extends Activity implements OnInitListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+
+		WebClient c = new WebClient();
+		
+		System.out.println("user="+c.getUserById(1));
+		
 	}
 
-	// speech synthesis
-
 	private TextToSpeech mTextToSpeech = null;
-
-	// private boolean speechSynthReady = false;
 
 	@Override
 	protected void onPause() {
@@ -104,8 +108,6 @@ public class SampleSpeechActivity extends Activity implements OnInitListener {
 	private static final int VOICE_RECOGNITION_REQUEST = 0x10101;
 
 	public void speakToMe(View view) {
-		System.out.println("speaktome");
-		startService(new Intent(this, SpeakerService.class));
 		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
 				RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -116,6 +118,9 @@ public class SampleSpeechActivity extends Activity implements OnInitListener {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		
+		
 		if (resultCode != RESULT_OK && requestCode == VOICE_RECOGNITION_REQUEST)
 			return;
 		if (requestCode == VOICE_RECOGNITION_REQUEST && resultCode == RESULT_OK) {
@@ -123,13 +128,17 @@ public class SampleSpeechActivity extends Activity implements OnInitListener {
 					.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 			TextView textView = (TextView) findViewById(R.id.speech_io_text);
 			String firstMatch = matches.get(0);
+			
+			Intent intentTTS = new Intent(this.getApplicationContext(), TTSService.class);
+			intentTTS.putExtra("textToSay", firstMatch);
+			startService(intentTTS);
+			
 			textView.setText(firstMatch);
 		}
 	}
 
 	private void parseText(String text) {
 		if (text.startsWith("ajouter")) {
-			System.out.println("tante");
 			TextToSpeech mTextToSpeech2 = new TextToSpeech(
 					getApplicationContext(), this);
 			mTextToSpeech2.setLanguage(Locale.FRANCE);

@@ -284,7 +284,7 @@ public class WebClient {
 	private String sendRequest(String nameMethod, List<String> params) {
 		HttpPost request;
 		try {
-			request = new HttpPost("http://localhost:8000/locusta/services");
+			request = new HttpPost("http://88.176.4.252:8000/locusta/services");
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			return null;
@@ -335,12 +335,12 @@ public class WebClient {
 
 	public static void main(String args[]) {
 		WebClient wc = new WebClient();
-		System.out.println("Connexion établie");
+		System.out.println("Connexion ï¿½tablie");
 
 		// User toto = wc.userRegistration(new User("toto", "toto"));
 		// User titi = wc.userRegistration(new User("titi", "titi"));
 //		 User toto = wc.getUserById(1);
-//		// EventType et1 = wc.addEventType("cinéma");
+//		// EventType et1 = wc.addEventType("cinï¿½ma");
 //		List<EventType> let = wc.getEventTypes();
 //		EventType et1 = let.get(0);
 //		 Event e1 = new Event("event1", "descr1", new Date(), -1.659966,
