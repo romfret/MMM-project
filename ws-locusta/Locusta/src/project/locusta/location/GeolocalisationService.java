@@ -1,5 +1,7 @@
-package projet.locusta.mapacti;
+package project.locusta.location;
 
+import projet.locusta.mapacti.LocustaMapActivityMain;
+import projet.locusta.mapacti.R;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
@@ -61,7 +63,7 @@ public class GeolocalisationService implements LocationListener {
 	//---------------- Life cycle ----------------//
 	
 	// Subscription
-	protected void onResume() {
+	public void onResume() {
 		locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
@@ -69,7 +71,7 @@ public class GeolocalisationService implements LocationListener {
 	}
 	
 	// Unsubscribe
-	protected void onPause() {
+	public void onPause() {
 		locationManager.removeUpdates(this);
 	}
 	

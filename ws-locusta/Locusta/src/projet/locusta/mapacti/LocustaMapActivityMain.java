@@ -10,6 +10,8 @@ import java.util.Map;
 import locusta.project.entitiesAndroid.Event;
 import locusta.project.entitiesAndroid.EventType;
 import locusta.project.entitiesAndroid.User;
+import project.locusta.location.GeolocalisationService;
+import project.locusta.location.MutableGeoPoint;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -32,9 +34,10 @@ public class LocustaMapActivityMain extends MapActivity {
 	private MapController mapController;
 	private List<Overlay> mapOverlays;
 	private Map<Integer, MapItemizedOverlay> itemzedOverlays;
+	private MutableGeoPoint currentUserPoint;
 	private GeolocalisationService geolocalisationService;
 	
-	private float distance = 10000.0f; // The event distance in meter
+//	private float distance = 10000.0f; // The event distance in meter
 	private int zoomLevel = 17; // Map zoom
 
 	
@@ -54,15 +57,22 @@ public class LocustaMapActivityMain extends MapActivity {
 	    // Get the geolocalisation service
 	    geolocalisationService = new GeolocalisationService(this);
 	    
-	    // Add item's icons in a Map
+	    // Add item's icons in a Map TODO
 	    itemzedOverlays = new ItemizedOverlaysInitialization().init(this);
-	    
 	    
 	    mapOverlays = mapView.getOverlays();
 	    // Add items to map
 	    for (MapItemizedOverlay item : itemzedOverlays.values()) {
 			mapOverlays.add(item);
 		}
+	    
+	    currentUserPoint = new MutableGeoPoint((int)(-1.678905f * 1E6), (int)(48.122474f * 1E6));
+	    
+	    // Add user overlay
+//	    Drawable drawable88 = getResources().getDrawable(R.drawable.img_88);
+//	    MapItemizedOverlay itemUser = new MapItemizedOverlay(drawable88, this);
+//	    itemUser.addOverlay(new OverlayItem(currentUserPoint, "Me", "My current location"));
+//	    itemzedOverlays.get(88).addOverlay(new OverlayItem(currentUserPoint, "Me", "My current location"));
 	    
 	    
 	    // test
@@ -115,29 +125,29 @@ public class LocustaMapActivityMain extends MapActivity {
 
 			showToast(LocationManager.GPS_PROVIDER);
 			
-			String msg = String.format(
-					getResources().getString(R.string.display_current_location), currentLocation.getLatitude(),
-					currentLocation.getLongitude());
+//			String msg = String.format(
+//					getResources().getString(R.string.display_current_location), currentLocation.getLatitude(),
+//					currentLocation.getLongitude());
 			
 			
 			
 			// TODO
-//			Geocoder geo = new Geocoder(this);
-//			String msg = "";
-//			try {
-//				List<Address> addresses = geo.getFromLocation(currentLocation.getAltitude(), currentLocation.getLatitude(), 1);
-//				
-//				if(addresses != null && addresses.size() == 1) {
-//					Address address = addresses.get(0);
-//					msg = String.format("%s, %s %s",	address.getAddressLine(0), address.getPostalCode(),	address.getLocality());
-//				}
-//				else {
-//					msg = "No address was found !";
-//				}
-//				
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
+			Geocoder geo = new Geocoder(this);
+			String msg = "";
+			try {
+				List<Address> addresses = geo.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+				
+				if(addresses != null && addresses.size() >= 1) {
+					Address address = addresses.get(0);
+					msg = String.format("%s, %s %s",	address.getAddressLine(0), address.getPostalCode(),	address.getLocality());
+				}
+				else {
+					msg = "No address was found !";
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			
 			
 			
@@ -203,6 +213,11 @@ public class LocustaMapActivityMain extends MapActivity {
 	public void onLocationChanged(GeoPoint p) {
 		mapController.animateTo(p);
 		mapController.setCenter(p);
+		
+		// Refresh the current user overlay position
+		currentUserPoint.setLatitudeE6(p.getLatitudeE6());
+		currentUserPoint.setLongitudeE6(p.getLongitudeE6());
+		showToast(currentUserPoint.toString());
 	}
 	
 	public void showToast(String message) {
