@@ -36,8 +36,9 @@ public class MapItemizedOverlay extends ItemizedOverlay {
 		return mOverlays.size();
 	}
 	
-	/*
+	/**
 	 * Add a location for the current item marker
+	 * @param overlay
 	 */
 	public void addOverlay(OverlayItem overlay) {
 	    mOverlays.add(overlay);

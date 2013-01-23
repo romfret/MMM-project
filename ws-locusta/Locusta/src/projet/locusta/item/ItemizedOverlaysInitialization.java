@@ -22,6 +22,9 @@ public class ItemizedOverlaysInitialization {
 	 * @return
 	 */
 	public Map<Integer, MapItemizedOverlay> init(LocustaMapActivityMain locustaMapActivityMain) {
+
+		// TODO faire une boucle for pour ajouter toutes les icones
+		
 		
 		 // Icone User
  		Drawable drawable88 = locustaMapActivityMain.getResources().getDrawable(R.drawable.img_88);
