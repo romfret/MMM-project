@@ -12,10 +12,9 @@ import locusta.project.entitiesAndroid.EventType;
 import locusta.project.entitiesAndroid.User;
 import projet.locusta.item.ItemizedOverlaysInitialization;
 import projet.locusta.item.MapItemizedOverlay;
-import projet.locusta.location.GeolocalisationService;
+import projet.locusta.location.UserLocationOverlay;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +24,6 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
@@ -35,11 +33,10 @@ public class LocustaMapActivityMain extends MapActivity {
 	private MapController mapController;
 	private List<Overlay> mapOverlays;
 	private Map<Integer, MapItemizedOverlay> itemzedOverlays;
-	private GeolocalisationService geolocalisationService;
-	private MyLocationOverlay userLocationOverlay;
 	
 //	private float distance = 10000.0f; // The event distance in meter
 	private int zoomLevel = 17; // Map zoom
+	private UserLocationOverlay userLocationOverlay;
 
 	
 	@Override
@@ -55,12 +52,8 @@ public class LocustaMapActivityMain extends MapActivity {
 	    mapController = mapView.getController();
 	    mapController.setZoom(zoomLevel);
 	    
-	    // Get the geolocalisation service
-	    geolocalisationService = new GeolocalisationService(this);
-	    
-	    // Add item's icons in a Map TODO
-	    ItemizedOverlaysInitialization itemInit = new ItemizedOverlaysInitialization();
-	    itemzedOverlays = itemInit.init(this);
+	    // Add item's icons in a Map
+	    itemzedOverlays = new ItemizedOverlaysInitialization().init(this); // TODO : cf le TODO dans la classe
 	    
 	    mapOverlays = mapView.getOverlays();
 	    // Add items to map
@@ -68,14 +61,11 @@ public class LocustaMapActivityMain extends MapActivity {
 			mapOverlays.add(item);
 		}
 	    
+	    // Add geolocation
 	    // Add user position item marker
-	    userLocationOverlay = new MyLocationOverlay(this, mapView);
+	    userLocationOverlay = new UserLocationOverlay(this, mapView);
 	    mapOverlays.add(userLocationOverlay);
 	    userLocationOverlay.enableMyLocation();
-	    /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	     * userLocationOverlay contient les coordonnées de l'utilisateur. Est-ce possible de gérer le centrage
-	     *  de la carte sur l'utilisateur avec un onLocationChanged ?? 
-	     */
 	    	    
 	    // test
 	    Date d = new Date();
@@ -124,9 +114,6 @@ public class LocustaMapActivityMain extends MapActivity {
 			break;
 		case R.id.menu_current_location :
 			GeoPoint currentLocation = userLocationOverlay.getMyLocation();
-
-			showToast(LocationManager.GPS_PROVIDER);
-			showToast(currentLocation.getLatitudeE6() / 1E6 + ", " + currentLocation.getLongitudeE6() / 1E6);
 
 			Geocoder geo = new Geocoder(this);
 			String msg = "";
@@ -194,18 +181,6 @@ public class LocustaMapActivityMain extends MapActivity {
 		for (MapItemizedOverlay item : itemzedOverlays.values()) {
 			item.clearOverlays();
 		}
-	}
-	
-	//---------------- Location ----------------//
-	
-	protected void onResume() {
-		super.onResume();
-		geolocalisationService.onResume();
-	}
-	
-	protected void onPause() {
-		super.onPause();
-		geolocalisationService.onPause();
 	}
 	
 	/**

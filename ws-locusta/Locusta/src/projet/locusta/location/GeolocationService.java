@@ -11,7 +11,7 @@ import android.os.Bundle;
 
 import com.google.android.maps.GeoPoint;
 
-public class GeolocalisationService implements LocationListener {
+public class GeolocationService implements LocationListener {
 
 	// http://www.tutos-android.com/geolocalisation-android
 	
@@ -19,7 +19,7 @@ public class GeolocalisationService implements LocationListener {
 	private LocationManager locationManager;
 	private Location location;
 	
-	public GeolocalisationService(LocustaMapActivityMain activity) {
+	public GeolocationService(LocustaMapActivityMain activity) {
 		this.activity = activity;
 		location = new Location(LocationManager.GPS_PROVIDER);
 	}
