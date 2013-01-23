@@ -88,7 +88,7 @@ public class LocustaMapActivityMain extends MapActivity {
 	    
 	    Event rennesBouffe = new Event("La rue de la bouffe", "De la bouffe à foison :)", d, -1.681255f, 48.105397f, u);
 	    EventType eventType2 = new EventType("Restaurant");
-	    eventType2.setId(37); // TODO 39
+	    eventType2.setId(39);
 	    rennesBouffe.setEventType(eventType2);
 	    
 	    Collection<Event> events = new ArrayList<Event>();

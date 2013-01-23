@@ -27,7 +27,6 @@ public class ItemizedOverlaysInitialization {
  		Drawable drawable88 = locustaMapActivityMain.getResources().getDrawable(R.drawable.img_88);
  	    itemzedOverlays.put(88, new MapItemizedOverlay(drawable88, locustaMapActivityMain));
 		
-		
 	    
 		// Icones Bars
 	    Drawable drawable37 = locustaMapActivityMain.getResources().getDrawable(R.drawable.img_37);

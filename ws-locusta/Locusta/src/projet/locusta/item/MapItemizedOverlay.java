@@ -23,6 +23,7 @@ public class MapItemizedOverlay extends ItemizedOverlay {
 	public MapItemizedOverlay(Drawable defaultMarker, Context context) {
 		super(boundCenterBottom(defaultMarker));
 		mContext = context;
+		populate(); // To prevent a NullPointerException
 	}
 
 	@Override
