@@ -3,16 +3,12 @@ package locusta.project.entitiesAndroid;
 
 import java.io.Serializable;
 
+public class EventType implements Serializable{
 
 
-public class EventType implements Serializable {
+    private static final long serialVersionUID = -7448829558275268188L;
 
-    /**
-	 * 
-	 */
-	private static final long serialVersionUID = -3255256095273782354L;
-
-	private int id;
+    private int id;
 
     private String name;
     
@@ -40,6 +36,6 @@ public class EventType implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
     
 }

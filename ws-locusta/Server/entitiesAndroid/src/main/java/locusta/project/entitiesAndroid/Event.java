@@ -7,14 +7,9 @@ import java.util.Date;
 
 public class Event implements Serializable {
 
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1148258706503362545L;
+	private static final long serialVersionUID = -7448829558275268188L;
 
 	private int id;
-
 	private String name;
 
 	private String description;
@@ -22,10 +17,14 @@ public class Event implements Serializable {
 	private Date startDate;
 
 	private Date endDate;
-	private double lon;
-	private double lat;
+
+	private double longitude;
+
+	private double latitude;
+
 
 	EventType eventType;
+
 
 	User owner;
 
@@ -33,6 +32,7 @@ public class Event implements Serializable {
 		eventType = null;
 	}
 
+	/* This constructor use only the non nullable fields */
 	public Event(String name, String description, Date startDate,
 			double lon, double lat, User owner) {
 		super();
@@ -46,8 +46,8 @@ public class Event implements Serializable {
 		cal.add(Calendar.HOUR_OF_DAY, 24);
 		this.endDate = cal.getTime();
 
-		this.lon = lon;
-		this.lat = lat;
+		this.longitude = lon;
+		this.latitude = lat;
 		this.owner = owner;
 	}
 
@@ -92,19 +92,19 @@ public class Event implements Serializable {
 	}
 
 	public double getLongitude() {
-		return lon;
+		return longitude;
 	}
 
 	public void setLongitude(double lon) {
-		this.lon = lon;
+		this.longitude = lon;
 	}
 
-	public double getLat() {
-		return lat;
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public void setLat(double lat) {
-		this.lat = lat;
+	public void setLatitude(double lat) {
+		this.latitude = lat;
 	}
 
 	public EventType getEventType() {
@@ -122,5 +122,6 @@ public class Event implements Serializable {
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
+
 
 }

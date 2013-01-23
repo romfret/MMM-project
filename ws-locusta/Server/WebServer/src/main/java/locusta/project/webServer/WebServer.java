@@ -56,7 +56,7 @@ public class WebServer {
 
 		HttpServer server = null;
 		try {
-			server = HttpServer.create(new InetSocketAddress(8000), 0);
+			server = HttpServer.create(new InetSocketAddress(80), 0);
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(0);
@@ -93,7 +93,7 @@ public class WebServer {
 			}
 			System.out.print(who + ": Request body:" + requestBody);
 			System.out.println(who + ": Reading...");
-			// Lecture du nom de la méthode à  appeler
+			// Lecture du nom de la mï¿½thode ï¿½ appeler
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode rootNode = mapper.readTree(jp);
 			if (rootNode == null) {
@@ -109,7 +109,7 @@ public class WebServer {
 			Method method = null;
 			System.out.println(who + ": ...want to call : " + methodName + "(...)");
 
-			// Recherche de la méthode sur le serveur et attribution
+			// Recherche de la mï¿½thode sur le serveur et attribution
 			for (Method m : Services.class.getMethods()) {
 				if (m.getName().equals(methodName))
 					method = m;
@@ -122,7 +122,7 @@ public class WebServer {
 				return;
 			}
 
-			// Composition des paramètres
+			// Composition des paramï¿½tres
 			List<Object> parameters = new ArrayList<Object>();
 			JsonNode paramsNode = rootNode.path("parameters");
 			if (paramsNode == null) {

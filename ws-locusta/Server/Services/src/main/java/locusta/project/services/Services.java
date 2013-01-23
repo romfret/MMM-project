@@ -3,14 +3,12 @@ package locusta.project.services;
 import java.util.List;
 
 import javax.ejb.Remote;
-import javax.jws.WebService;
 
 import locusta.project.entities.Event;
 import locusta.project.entities.EventType;
 import locusta.project.entities.User;
 
 @Remote
-@WebService
 public interface Services {
 
 	public Event addEvent(Event event);
@@ -25,7 +23,6 @@ public interface Services {
 
 	public List<EventType> getEventTypes();
 
-	// TODO Put others methods here
 	
 	//////////////////////////////////////////////////////////////////////
 	

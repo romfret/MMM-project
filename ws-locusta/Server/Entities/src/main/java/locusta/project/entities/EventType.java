@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import locusta.project.entities.IEntity;
+
 
 /**
  * A JPA 2.0 Entity.

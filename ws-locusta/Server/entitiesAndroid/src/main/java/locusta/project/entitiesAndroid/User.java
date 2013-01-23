@@ -4,23 +4,20 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -7448829558275268188L;
-
 
 	private int id;
 
 	private String userName;
 
-
 	private String pass;
-	private double lon;
-
-	private double lat;
+	private double longitude;
+	private double latitude;
 
 	private Set<User> friends;
-
 	public User() {
 		friends = new HashSet<User>();
 	}
@@ -31,13 +28,13 @@ public class User implements Serializable {
 		this.pass = pass;
 	}
 
-	public User(String userName, String hashedPass, double lon,
-			double lat) {
+	public User(String userName, String hashedPass, double lontitude,
+			double latitude) {
 		super();
 		this.userName = userName;
 		this.pass = hashedPass;
-		this.lon = lon;
-		this.lat = lat;
+		this.longitude = lontitude;
+		this.latitude = latitude;
 	}
 
 	public int getId() {
@@ -64,20 +61,20 @@ public class User implements Serializable {
 		this.pass = pass;
 	}
 
-	public double getLon() {
-		return lon;
+	public double getLongitude() {
+		return longitude;
 	}
 
-	public void setLon(double lon) {
-		this.lon = lon;
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
 	}
 
-	public double getLat() {
-		return lat;
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public void setLat(double lat) {
-		this.lat = lat;
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
 
 	public Set<User> getFriends() {
@@ -95,5 +92,6 @@ public class User implements Serializable {
 	public void removeFriend(User user) {
 		this.friends.remove(user);
 	}
+
 
 }

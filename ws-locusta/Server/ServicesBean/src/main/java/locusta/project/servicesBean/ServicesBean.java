@@ -4,7 +4,6 @@ package locusta.project.servicesBean;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -182,8 +181,8 @@ public class ServicesBean implements Services {
 		User realUser = getUserById(user.getId());
 		realUser.setUserName(user.getUserName());
 		realUser.setPass(user.getPass());
-		realUser.setLon(user.getLon());
-		realUser.setLat(user.getLat());
+		realUser.setLongitude(user.getLongitude());
+		realUser.setLatitude(user.getLatitude());
 		realUser.getFriends().clear();
 		for (User u : user.getFriends()) {
 			User ru = getUserById(u.getId());

@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import locusta.project.entities.IEntity;
+
 /**
  * A JPA 2.0 Entity.
  */
@@ -35,10 +37,10 @@ public class User implements Serializable, IEntity {
 	private String pass;
 
 	@Column(nullable = true)
-	private double lon;
+	private double longitude;
 
 	@Column(nullable = true)
-	private double lat;
+	private double latitude;
 
 	/*
 	 * No REMOVE CascadeType to avoid accidental deletions friends
@@ -62,13 +64,13 @@ public class User implements Serializable, IEntity {
 		this.pass = pass;
 	}
 
-	public User(String userName, String hashedPass, double lon,
-			double lat) {
+	public User(String userName, String hashedPass, double longitude,
+			double latitude) {
 		super();
 		this.userName = userName;
 		this.pass = hashedPass;
-		this.lon = lon;
-		this.lat = lat;
+		this.longitude = longitude;
+		this.latitude = latitude;
 	}
 
 	public int getId() {
@@ -95,20 +97,20 @@ public class User implements Serializable, IEntity {
 		this.pass = pass;
 	}
 
-	public double getLon() {
-		return lon;
+	public double getLongitude() {
+		return longitude;
 	}
 
-	public void setLon(double lon) {
-		this.lon = lon;
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
 	}
 
-	public double getLat() {
-		return lat;
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public void setLat(double lat) {
-		this.lat = lat;
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
 
 	public Set<User> getFriends() {
@@ -134,8 +136,8 @@ public class User implements Serializable, IEntity {
 	public IEntity clone(int depthFriend) {
 		User newUser = new User(this.userName, this.pass);
 		newUser.setId(this.id);
-		newUser.setLat(this.lat);
-		newUser.setLon(this.lon);
+		newUser.setLatitude(this.latitude);
+		newUser.setLongitude(this.longitude);
 
 		if (depthFriend > 0) {
 			Set<User> newFriends = new HashSet<User>();

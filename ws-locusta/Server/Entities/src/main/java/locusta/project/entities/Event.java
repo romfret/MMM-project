@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import locusta.project.entities.IEntity;
+
 /**
  * A JPA 2.0 Entity.
  */
@@ -43,10 +45,10 @@ public class Event implements Serializable, IEntity {
 	private Date endDate;
 
 	@Column(nullable = false)
-	private double lon;
+	private double longitude;
 
 	@Column(nullable = false)
-	private double lat;
+	private double latitude;
 
 	/*
 	 * nullable is true, it is explicitly the default type event EAGER fetch
@@ -84,8 +86,8 @@ public class Event implements Serializable, IEntity {
 		cal.add(Calendar.HOUR_OF_DAY, 24);
 		this.endDate = cal.getTime();
 
-		this.lon = lon;
-		this.lat = lat;
+		this.longitude = lon;
+		this.latitude = lat;
 		this.owner = owner;
 	}
 
@@ -130,19 +132,19 @@ public class Event implements Serializable, IEntity {
 	}
 
 	public double getLongitude() {
-		return lon;
+		return longitude;
 	}
 
 	public void setLongitude(double lon) {
-		this.lon = lon;
+		this.longitude = lon;
 	}
 
-	public double getLat() {
-		return lat;
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public void setLat(double lat) {
-		this.lat = lat;
+	public void setLatitude(double lat) {
+		this.latitude = lat;
 	}
 
 	public EventType getEventType() {
@@ -163,7 +165,7 @@ public class Event implements Serializable, IEntity {
 
 	public IEntity cloneForJson() {
 		Event newEvent = new Event(this.name, this.description,
-				this.startDate, this.lon, this.lat,
+				this.startDate, this.longitude, this.latitude,
 				(User) this.owner.cloneForJson());
 		newEvent.setEndDate(this.endDate);
 		if (eventType != null)

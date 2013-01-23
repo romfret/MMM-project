@@ -71,13 +71,13 @@ public class MainActivity extends Activity {
 					
 					
 					//pas de == avec les string
-					if (userFound.getHashedPass().equals(wc
+					if (userFound.getPass().equals(wc
 							.encryptPassword(password))) {				
 						println("OK c'est le bon !");
 						break;
 					}
 					println("Mauvais mot de passe !");
-					println("righ md5 = " + toto.getHashedPass());
+					println("righ md5 = " + toto.getPass());
 					println("your md5 = " + wc
 							.encryptPassword(password));
 				}
