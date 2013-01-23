@@ -1,4 +1,4 @@
-package project.locusta.location;
+package projet.locusta.location;
 
 import projet.locusta.mapacti.LocustaMapActivityMain;
 import projet.locusta.mapacti.R;

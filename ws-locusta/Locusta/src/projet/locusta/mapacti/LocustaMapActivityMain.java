@@ -10,11 +10,11 @@ import java.util.Map;
 import locusta.project.entitiesAndroid.Event;
 import locusta.project.entitiesAndroid.EventType;
 import locusta.project.entitiesAndroid.User;
-import project.locusta.location.GeolocalisationService;
-import project.locusta.location.MutableGeoPoint;
+import projet.locusta.item.ItemizedOverlaysInitialization;
+import projet.locusta.item.MapItemizedOverlay;
+import projet.locusta.location.GeolocalisationService;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,6 +25,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
@@ -34,8 +35,8 @@ public class LocustaMapActivityMain extends MapActivity {
 	private MapController mapController;
 	private List<Overlay> mapOverlays;
 	private Map<Integer, MapItemizedOverlay> itemzedOverlays;
-	private MutableGeoPoint currentUserPoint;
 	private GeolocalisationService geolocalisationService;
+	private MyLocationOverlay userLocationOverlay;
 	
 //	private float distance = 10000.0f; // The event distance in meter
 	private int zoomLevel = 17; // Map zoom
@@ -58,7 +59,8 @@ public class LocustaMapActivityMain extends MapActivity {
 	    geolocalisationService = new GeolocalisationService(this);
 	    
 	    // Add item's icons in a Map TODO
-	    itemzedOverlays = new ItemizedOverlaysInitialization().init(this);
+	    ItemizedOverlaysInitialization itemInit = new ItemizedOverlaysInitialization();
+	    itemzedOverlays = itemInit.init(this);
 	    
 	    mapOverlays = mapView.getOverlays();
 	    // Add items to map
@@ -66,15 +68,15 @@ public class LocustaMapActivityMain extends MapActivity {
 			mapOverlays.add(item);
 		}
 	    
-	    currentUserPoint = new MutableGeoPoint((int)(-1.678905f * 1E6), (int)(48.122474f * 1E6));
-	    
-	    // Add user overlay
-//	    Drawable drawable88 = getResources().getDrawable(R.drawable.img_88);
-//	    MapItemizedOverlay itemUser = new MapItemizedOverlay(drawable88, this);
-//	    itemUser.addOverlay(new OverlayItem(currentUserPoint, "Me", "My current location"));
-//	    itemzedOverlays.get(88).addOverlay(new OverlayItem(currentUserPoint, "Me", "My current location"));
-	    
-	    
+	    // Add user position item marker
+	    userLocationOverlay = new MyLocationOverlay(this, mapView);
+	    mapOverlays.add(userLocationOverlay);
+	    userLocationOverlay.enableMyLocation();
+	    /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	     * userLocationOverlay contient les coordonnées de l'utilisateur. Est-ce possible de gérer le centrage
+	     *  de la carte sur l'utilisateur avec un onLocationChanged ?? 
+	     */
+	    	    
 	    // test
 	    Date d = new Date();
 	    User u = new User("userName", "pass");
@@ -86,7 +88,7 @@ public class LocustaMapActivityMain extends MapActivity {
 	    
 	    Event rennesBouffe = new Event("La rue de la bouffe", "De la bouffe à foison :)", d, -1.681255f, 48.105397f, u);
 	    EventType eventType2 = new EventType("Restaurant");
-	    eventType2.setId(39);
+	    eventType2.setId(37); // TODO 39
 	    rennesBouffe.setEventType(eventType2);
 	    
 	    Collection<Event> events = new ArrayList<Event>();
@@ -121,21 +123,15 @@ public class LocustaMapActivityMain extends MapActivity {
 			Toast.makeText(getApplicationContext(), "La partie de Dany :)", Toast.LENGTH_SHORT).show();
 			break;
 		case R.id.menu_current_location :
-			Location currentLocation = geolocalisationService.getLocation();
+			GeoPoint currentLocation = userLocationOverlay.getMyLocation();
 
 			showToast(LocationManager.GPS_PROVIDER);
-			
-//			String msg = String.format(
-//					getResources().getString(R.string.display_current_location), currentLocation.getLatitude(),
-//					currentLocation.getLongitude());
-			
-			
-			
-			// TODO
+			showToast(currentLocation.getLatitudeE6() / 1E6 + ", " + currentLocation.getLongitudeE6() / 1E6);
+
 			Geocoder geo = new Geocoder(this);
 			String msg = "";
 			try {
-				List<Address> addresses = geo.getFromLocation(currentLocation.getLatitude(), currentLocation.getLongitude(), 1);
+				List<Address> addresses = geo.getFromLocation(currentLocation.getLatitudeE6() / 1E6, currentLocation.getLongitudeE6() / 1E6, 1);
 				
 				if(addresses != null && addresses.size() >= 1) {
 					Address address = addresses.get(0);
@@ -168,6 +164,7 @@ public class LocustaMapActivityMain extends MapActivity {
 	 */
 	public void addEvents(Collection<Event> events) {
 		for (Event event : events) {
+			// event.getEventType().getId() is the ID of the item marker
 			itemzedOverlays.get(event.getEventType().getId()).addOverlay(createOverlayItem(event));
 		}
 	}
@@ -180,8 +177,13 @@ public class LocustaMapActivityMain extends MapActivity {
 		itemzedOverlays.get(event.getEventType().getId()).addOverlay(createOverlayItem(event));
 	}
 	
+	/**
+	 * Create an overlay item contain location and descriptions about an event
+	 * @param event : contain location and descriptions
+	 * @return
+	 */
 	private OverlayItem createOverlayItem(Event event) {
-		GeoPoint point = new GeoPoint((int)(event.getLatitude() * 1E6), (int)(event.getLongitude() * 1E6));
+		GeoPoint point = new GeoPoint((int)(event.getLat() * 1E6), (int)(event.getLongitude() * 1E6));
 	    return new OverlayItem(point, event.getName(), event.getDescription());
 	}
 	
@@ -211,13 +213,10 @@ public class LocustaMapActivityMain extends MapActivity {
 	 * @param p
 	 */
 	public void onLocationChanged(GeoPoint p) {
+		// Center the map on user
 		mapController.animateTo(p);
 		mapController.setCenter(p);
-		
-		// Refresh the current user overlay position
-		currentUserPoint.setLatitudeE6(p.getLatitudeE6());
-		currentUserPoint.setLongitudeE6(p.getLongitudeE6());
-		showToast(currentUserPoint.toString());
+		showToast(p.toString()); // TODO : a effacer apres tests
 	}
 	
 	public void showToast(String message) {
