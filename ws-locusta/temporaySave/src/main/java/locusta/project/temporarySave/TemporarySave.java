@@ -5,7 +5,7 @@ import locusta.project.entitiesAndroid.User;
 public class TemporarySave {
 	private static TemporarySave instance = null;
 	private User currentUser;
-	private double altitude;
+	private double latitude;
 	private double longitude;
 
 	public static TemporarySave getInstance() {
@@ -22,12 +22,12 @@ public class TemporarySave {
 		currentUser = user;
 	}
 
-	public double getAltitude() {
-		return altitude;
+	public double getLatitude() {
+		return latitude;
 	}
 
-	public void setAltitude(double altitude) {
-		this.altitude = altitude;
+	public void setLatitude(double altitude) {
+		this.latitude = altitude;
 	}
 
 	public double getLongitude() {

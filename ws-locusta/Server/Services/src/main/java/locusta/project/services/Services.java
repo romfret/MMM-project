@@ -22,6 +22,8 @@ public interface Services {
 	public EventType addEventType(String name);
 
 	public List<EventType> getEventTypes();
+	
+	public EventType getEventTypeById(int id);
 
 	
 	//////////////////////////////////////////////////////////////////////

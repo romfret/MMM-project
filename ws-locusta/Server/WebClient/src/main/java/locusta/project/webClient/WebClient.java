@@ -123,6 +123,24 @@ public class WebClient {
 
 		return (EventType) call("addEventType", params, EventType.class);
 	}
+	
+	public EventType getEventTypeById(int id) {
+		List<String> params = new ArrayList<String>();
+		try {
+			params.add(mapper.writeValueAsString(id));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+			return null;
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		return (EventType) call("getEventTypeById", params, EventType.class);
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<EventType> getEventTypes() {

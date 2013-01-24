@@ -193,5 +193,15 @@ public class ServicesBean implements Services {
 		entityManager.flush();
 
 	}
+	
+	public EventType getEventTypeById(int id) {
+		try {
+			Query query = entityManager.createQuery("SELECT et "
+					+ "FROM EventType et " + "WHERE et.id = " + id);
+			return (EventType) query.getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 }
