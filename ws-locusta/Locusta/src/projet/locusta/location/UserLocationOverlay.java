@@ -29,4 +29,14 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		locustaMapAcivityMain.onLocationChanged(p);
 	}
 
+	@Override
+	public GeoPoint getMyLocation() {
+		GeoPoint p = super.getMyLocation();
+		if (p == null)
+			return new GeoPoint((int)(48.114722f * 1E6), (int)(-1.679444f * 1E6)); // Rennes location
+		else
+			return p;
+	}
+
+	
 }

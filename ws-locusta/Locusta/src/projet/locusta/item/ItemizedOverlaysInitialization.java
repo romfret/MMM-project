@@ -40,6 +40,9 @@ public class ItemizedOverlaysInitialization {
 	    Drawable drawable39 = locustaMapActivityMain.getResources().getDrawable(R.drawable.img_39);
 	    itemzedOverlays.put(39, new MapItemizedOverlay(drawable39, locustaMapActivityMain));
 	
+	    // Icones Cinemas
+	    Drawable drawable67 = locustaMapActivityMain.getResources().getDrawable(R.drawable.img_67);
+	    itemzedOverlays.put(67, new MapItemizedOverlay(drawable67, locustaMapActivityMain));
 		
 		return itemzedOverlays;
 	}
