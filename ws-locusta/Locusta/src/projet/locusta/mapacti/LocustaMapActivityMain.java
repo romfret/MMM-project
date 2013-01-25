@@ -170,7 +170,7 @@ public class LocustaMapActivityMain extends MapActivity {
 	 * @return
 	 */
 	private OverlayItem createOverlayItem(Event event) {
-		GeoPoint point = new GeoPoint((int)(event.getLat() * 1E6), (int)(event.getLongitude() * 1E6));
+		GeoPoint point = new GeoPoint((int)(event.getLatitude() * 1E6), (int)(event.getLongitude() * 1E6));
 	    return new OverlayItem(point, event.getName(), event.getDescription());
 	}
 	
