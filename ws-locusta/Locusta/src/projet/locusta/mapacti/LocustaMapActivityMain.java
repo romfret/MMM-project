@@ -8,6 +8,7 @@ import java.util.Map;
 import locusta.project.entitiesAndroid.Event;
 import locusta.project.entitiesAndroid.EventType;
 import locusta.project.entitiesAndroid.User;
+import locusta.project.temporarySave.TemporarySave;
 import locusta.project.webClient.WebClient;
 import projet.locusta.item.ItemizedOverlaysInitialization;
 import projet.locusta.item.MapItemizedOverlay;
@@ -87,7 +88,7 @@ public class LocustaMapActivityMain extends MapActivity {
 	    currentUser = webCient.getUserById(1); // Tests
 		currentUser.setLatitude(userLocationOverlay.getMyLocation().getLatitudeE6() / 1E6);
 		currentUser.setLongitude(userLocationOverlay.getMyLocation().getLongitudeE6() / 1E6);
-	    
+	    TemporarySave.getInstance().setCurrentUser(currentUser); //TODO: à virer !!!!
 	    	    
 //	    // test
 //	    Date d = new Date();

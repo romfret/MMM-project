@@ -25,7 +25,7 @@ public final class R {
         public static int txtName=0x7f050001;
     }
     public static final class layout {
-        public static int main=0x7f030000;
+        public static int add_event=0x7f030000;
     }
     public static final class string {
         public static int app_name=0x7f040001;

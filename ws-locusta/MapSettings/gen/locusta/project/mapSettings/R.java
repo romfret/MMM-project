@@ -23,7 +23,7 @@ public final class R {
         public static int spinnerEventTypes=0x7f050002;
     }
     public static final class layout {
-        public static int main=0x7f030000;
+        public static int map_settings=0x7f030000;
     }
     public static final class string {
         public static int Allitem=0x7f040003;

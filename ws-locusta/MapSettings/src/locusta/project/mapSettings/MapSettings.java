@@ -25,7 +25,7 @@ public class MapSettings extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.map_settings);
         Spinner spinner = (Spinner) findViewById(R.id.spinnerEventTypes);       
        
         

@@ -4,7 +4,7 @@ import locusta.project.entitiesAndroid.User;
 
 public class TemporarySave {
 	private static TemporarySave instance = null;
-	private User currentUser = new User("userName", "pass"); // TODO à supr lors de l'jout de l apartie de dany
+	private User currentUser; // TODO à supr lors de l'jout de l apartie de dany
 	private double latitude;
 	private double longitude;
 
