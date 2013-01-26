@@ -114,9 +114,9 @@ public class ServicesBean implements Services {
 		
 		query += "SELECT e "
 				+ "FROM Event e, EventType et " 
-				+ "WHERE (ACOS(COS(" + latitude + " * PI() / 180) * COS(e.lat * PI() / 180) * COS("
-				+ "e.lon * PI() / 180 - " + longitude + " * PI() / 180) + ("
-				+ "SIN(" + latitude + " * PI() / 180) * SIN(e.lat * PI() / 180)))"
+				+ "WHERE (ACOS(COS(" + latitude + " * PI() / 180) * COS(e.latitude * PI() / 180) * COS("
+				+ "e.longitude * PI() / 180 - " + longitude + " * PI() / 180) + ("
+				+ "SIN(" + latitude + " * PI() / 180) * SIN(e.latitude * PI() / 180)))"
 				+ " * 6371000) <= " + radius + " AND "
 				+ "e.endDate > now() AND e.startDate < now()" ;
 		if (eventType != null) {
