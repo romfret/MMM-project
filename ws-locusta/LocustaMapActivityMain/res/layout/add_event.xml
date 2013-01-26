@@ -9,7 +9,7 @@
         android:id="@+id/lblName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="lblName"
+        android:text="Name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -24,7 +24,7 @@
         android:id="@+id/lblDescr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="lblDescr"
+        android:text="Description"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
@@ -39,7 +39,7 @@
         android:id="@+id/lblEventType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="lblEventType"
+        android:text="Event types"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Spinner
@@ -69,7 +69,7 @@
             android:id="@+id/okAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ok"
+            android:text="Ok"
             android:onClick="ok" />
 
     </LinearLayout>

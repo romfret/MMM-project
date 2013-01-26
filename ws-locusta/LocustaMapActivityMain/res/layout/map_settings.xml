@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:text="lblRadius"
+            android:text="Radius (meters)"
             android:textAppearance="?android:attr/textAppearanceMedium" />
         
          <Spinner
@@ -32,7 +32,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:onClick="validSettings"
-            android:text="ok" />
+            android:text="Ok" />
 
         <TextView
             android:id="@+id/lblMeters"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="meters"
+            android:text="Meters"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <SeekBar
@@ -59,7 +59,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/seekbarRadius"
             android:layout_marginTop="34dp"
-            android:text="lblEventsTypes"
+            android:text="Event types"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </RelativeLayout>
