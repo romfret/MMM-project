@@ -10,12 +10,12 @@ import java.util.Map;
 import locusta.project.entitiesAndroid.Event;
 import locusta.project.entitiesAndroid.EventType;
 import locusta.project.entitiesAndroid.User;
-import locusta.project.mapSettings.MapSettings;
 import locusta.project.webClient.WebClient;
 import projet.locusta.item.ItemizedOverlaysInitialization;
 import projet.locusta.item.MapItemizedOverlay;
 import projet.locusta.location.UserLocationOverlay;
-import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
@@ -41,9 +41,6 @@ public class LocustaMapActivityMain extends MapActivity {
 	private int radius; // The event distance in meter
 	private int zoomLevel = 17; // Map zoom
 	private UserLocationOverlay userLocationOverlay;
-	
-	
-	private Activity mapSettings;
 	
 	
 	private WebClient webCient;
@@ -131,8 +128,16 @@ public class LocustaMapActivityMain extends MapActivity {
     	switch (item.getItemId()) {
     	case R.id.menu_settings :
 
-//			mapSettings.showDialog(200);
     		showToast("Charger activity settings"); // TODO
+    		
+//    		Intent intentMapSetings = new Intent(Intent.ACTION_VIEW, Uri.parse("locusta.project.mapSettings.MapSettings"));
+//    		Intent intentMapSetings = new Intent(LocustaMapActivityMain.this, locusta.project.mapSettings.MapSettings.class); // pour meme projet
+    		
+    		Intent intentMapSetings = new Intent();
+    		intentMapSetings.setComponent(new ComponentName("locusta.project.mapSettings", "locusta.project.mapSettings.MapSettings"));
+    		
+    		startActivity(intentMapSetings);
+    		
     		break;
 		case R.id.menu_clear_events :
 			clearEvents();
