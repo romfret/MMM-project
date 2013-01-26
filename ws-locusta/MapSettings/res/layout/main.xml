@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/lblRadius"
-            android:max="2000"
+            android:max="6000"
             android:progress="200" />
 
         <TextView

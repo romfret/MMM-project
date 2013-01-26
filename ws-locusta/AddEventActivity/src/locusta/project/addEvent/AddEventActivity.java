@@ -28,31 +28,30 @@ public class AddEventActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
-        Spinner spinner = (Spinner) findViewById(R.id.spinnerEventType);       
-       
-        
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        
-        
-        et_ids.add(-1);
-        adapter.add("all");
-         wc = new WebClient();
-        List<EventType> ets = wc.getEventTypes();
-        for (EventType et : ets) {
-        	et_ids.add(et.getId());
-        	 adapter.add(et.getName());
-        }
-        adapter.notifyDataSetChanged();
-        spinner.setAdapter(adapter);
-        
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                selectedId = et_ids.indexOf(pos);
-            }
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+//        Spinner spinner = (Spinner) findViewById(R.id.spinnerEventType);     
+//        
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+//        
+//        
+////        et_ids.add(-1);
+////        adapter.add("all");
+//         wc = new WebClient();
+//        List<EventType> ets = wc.getEventTypes();
+//        for (EventType et : ets) {
+//        	et_ids.add(et.getId());
+//        	 adapter.add(et.getName());
+//        }
+//        adapter.notifyDataSetChanged();
+//        spinner.setAdapter(adapter);
+//        
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+//                selectedId = et_ids.indexOf(pos);
+//            }
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
     }
     
     public void ok(View v) {    	
@@ -65,6 +64,8 @@ public class AddEventActivity extends Activity {
             	EventType et = null;
             	if (selectedId != -1)
             		et = wc.getEventTypeById(selectedId);
+            	else
+            		return;
             	System.err.println(selectedId);
             	EditText nameV = (EditText) findViewById(R.id.txtName);
             	String name = nameV.getText().toString();
@@ -75,7 +76,7 @@ public class AddEventActivity extends Activity {
             	if (TemporarySave.getInstance().getCurrentUser() != null)
             		current = TemporarySave.getInstance().getCurrentUser();
             	else {
-            		System.err.println("User indéfini, ssauvegarde de l'évènement interrompue");
+            		System.err.println("Undifined user, application exit");
             		return;
             	}
             	Event e = new Event(name, description, now, TemporarySave.getInstance().getLongitude(), TemporarySave.getInstance().getLatitude(), current);

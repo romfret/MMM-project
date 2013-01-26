@@ -7,6 +7,7 @@
     <item android:id="@+id/menu_clear_events" android:title="@string/menu_clear_events" android:orderInCategory="101"></item>
     <item android:id="@+id/menu_friends" android:title="@string/menu_friends" android:orderInCategory="102"></item>
     <item android:id="@+id/menu_current_location" android:title="@string/menu_current_location" android:orderInCategory="103"></item>
+    <item android:id="@+id/add_event" android:title="@string/add_event" android:orderInCategory="104"></item>
     
     
     

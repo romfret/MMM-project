@@ -8,3 +8,7 @@ Ajouter une activity d'un autre projet :
 - Sur le projet contenant l'activity à récupérer : aller dans l'onglet android dans les propriétés du projet et cocher la case "is library"
 - Dans le projet où sera importée l'activity : aller dans le même menu et cliquer sur Add puis sélectionner le projet déclaré en temps que librarie
 - Ajouter dans le manifest.xml la dépendance à l'activity.
+			<activity android:name="locusta.project.mapSettings.MapSettings" android:exported="true"></activity>
+
+Exemple de lancement d'activity externe au projet :
+    		Intent intentMapSetings = new Intent(LocustaMapActivityMain.this, locusta.project.mapSettings.MapSettings.class);

@@ -28,7 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="locusta.project.mapSettings.MapSettings" android:exported="true"></activity>
+        <activity android:name="locusta.project.mapSettings.MapSettings" android:exported="true" android:theme="@android:style/Theme.Black"></activity>
+        <!-- <activity android:name="locusta.project.addEvent.AddEventActivity" android:exported="true"></activity> -->
+        <activity android:exported="true" android:name="locusta.project.addEvent.AddEventActivity"></activity>
     </application>
 
 </manifest>

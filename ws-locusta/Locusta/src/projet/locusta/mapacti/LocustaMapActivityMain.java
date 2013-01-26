@@ -1,9 +1,7 @@
 package projet.locusta.mapacti;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +12,8 @@ import locusta.project.webClient.WebClient;
 import projet.locusta.item.ItemizedOverlaysInitialization;
 import projet.locusta.item.MapItemizedOverlay;
 import projet.locusta.location.UserLocationOverlay;
-import android.content.ComponentName;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
@@ -31,6 +30,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
+@SuppressLint("WorldWriteableFiles")
 public class LocustaMapActivityMain extends MapActivity {
 	
 	private MapView mapView;
@@ -38,11 +38,11 @@ public class LocustaMapActivityMain extends MapActivity {
 	private List<Overlay> mapOverlays;
 	private Map<Integer, MapItemizedOverlay> itemzedOverlays;
 	
-	private int radius; // The event distance in meter
+	private int radius = 1000; // The event distance in meter
 	private int zoomLevel = 17; // Map zoom
 	private UserLocationOverlay userLocationOverlay;
 	
-	
+	private User currentUser;
 	private WebClient webCient;
 	private Integer specificEventTypeId = -1;
 
@@ -75,38 +75,40 @@ public class LocustaMapActivityMain extends MapActivity {
 	    mapOverlays.add(userLocationOverlay);
 	    userLocationOverlay.enableMyLocation();
 	    
-	    
-	    // Instanciate all activities
-//	    mapSettings = new MapSettings(); // TODO
-	    
 	    // Load the web client
 	    webCient = new WebClient();
 	    // Default options
 	    loadSettingsActivity();
 	    // Load default events
-	    System.out.println("=================================++>Events : " + loadEvents());
-//	    addEvents(loadEvents());
+	    addEvents(loadEvents());
+	    
+		// Get the current user
+//		currentUser = TemporarySave.getInstance().getCurrentUser(); // TODO restauer saund parte dany ok
+	    currentUser = webCient.getUserById(1); // Tests
+		currentUser.setLatitude(userLocationOverlay.getMyLocation().getLatitudeE6() / 1E6);
+		currentUser.setLongitude(userLocationOverlay.getMyLocation().getLongitudeE6() / 1E6);
+	    
 	    	    
-	    // test
-	    Date d = new Date();
-	    User u = new User("userName", "pass");
-	    
-	    Event rennes = new Event("La rue de la soif", "De la boisson à foison :)", d, -1.678905f, 48.112474f, u);
-	    EventType eventType = new EventType("Bars");
-	    eventType.setId(37);
-	    rennes.setEventType(eventType);
-	    
-	    Event rennesBouffe = new Event("La rue de la bouffe", "De la bouffe à foison :)", d, -1.681255f, 48.105397f, u);
-	    EventType eventType2 = new EventType("Restaurant");
-	    eventType2.setId(39);
-	    rennesBouffe.setEventType(eventType2);
-	    
-	    
-	    
-	    Collection<Event> events = new ArrayList<Event>();
-	    events.add(rennes);
-	    events.add(rennesBouffe);
-	    addEvents(events);
+//	    // test
+//	    Date d = new Date();
+//	    User u = new User("userName", "pass");
+//	    
+//	    Event rennes = new Event("La rue de la soif", "De la boisson à foison :)", d, -1.678905f, 48.112474f, u);
+//	    EventType eventType = new EventType("Bars");
+//	    eventType.setId(37);
+//	    rennes.setEventType(eventType);
+//	    
+//	    Event rennesBouffe = new Event("La rue de la bouffe", "De la bouffe à foison :)", d, -1.681255f, 48.105397f, u);
+//	    EventType eventType2 = new EventType("Restaurant");
+//	    eventType2.setId(39);
+//	    rennesBouffe.setEventType(eventType2);
+//	    
+//	    
+//	    
+//	    Collection<Event> events = new ArrayList<Event>();
+//	    events.add(rennes);
+//	    events.add(rennesBouffe);
+//	    addEvents(events);
 	}
 
 	@Override
@@ -128,14 +130,7 @@ public class LocustaMapActivityMain extends MapActivity {
     	switch (item.getItemId()) {
     	case R.id.menu_settings :
 
-    		showToast("Charger activity settings"); // TODO
-    		
-//    		Intent intentMapSetings = new Intent(Intent.ACTION_VIEW, Uri.parse("locusta.project.mapSettings.MapSettings"));
-//    		Intent intentMapSetings = new Intent(LocustaMapActivityMain.this, locusta.project.mapSettings.MapSettings.class); // pour meme projet
-    		
-    		Intent intentMapSetings = new Intent();
-    		intentMapSetings.setComponent(new ComponentName("locusta.project.mapSettings", "locusta.project.mapSettings.MapSettings"));
-    		
+    		Intent intentMapSetings = new Intent(LocustaMapActivityMain.this, locusta.project.mapSettings.MapSettings.class);
     		startActivity(intentMapSetings);
     		
     		break;
@@ -168,10 +163,12 @@ public class LocustaMapActivityMain extends MapActivity {
 				e.printStackTrace();
 			}
 			
-			
-			
-			
 			Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+			break;
+		case R.id.add_event :
+			Intent intentAddEvent = new Intent(LocustaMapActivityMain.this, locusta.project.addEvent.AddEventActivity.class);
+			startActivity(intentAddEvent);
+			break;
 		default:
 			System.out.println("Menu id unrecognized");
 			break;
@@ -219,14 +216,17 @@ public class LocustaMapActivityMain extends MapActivity {
 		}
 	}
 	
+	/**
+	 * Load events on the server
+	 * @return event list
+	 */
 	private List<Event> loadEvents() {
 		GeoPoint p = userLocationOverlay.getMyLocation();
-		System.out.println("==============================================>p" + p);
 		if (specificEventTypeId == -1)
-			return webCient.lookEventsAround(p.getLongitudeE6() / 1E6, p.getLatitudeE6() / 1E6, /*radius*/100000);
+			return webCient.lookEventsAround(p.getLongitudeE6() / 1E6, p.getLatitudeE6() / 1E6, radius);
 		else {
 			EventType eventType = webCient.getEventTypeById(specificEventTypeId);
-			return webCient.lookEventsAround(p.getLongitudeE6() / 1E6, p.getLongitudeE6() / 1E6, /*radius*/100000, eventType);
+			return webCient.lookEventsAround(p.getLongitudeE6() / 1E6, p.getLatitudeE6() / 1E6, radius, eventType);
 		}
 	}
 	
@@ -241,9 +241,9 @@ public class LocustaMapActivityMain extends MapActivity {
 		mapController.animateTo(p);
 		mapController.setCenter(p);
 		
-		// TODO : setter valeur dans le singleton User;
-		
-		showToast(p.toString()); // TODO : a effacer apres tests
+		// Set the current user location
+		currentUser.setLatitude(p.getLatitudeE6() / 1E6);
+		currentUser.setLongitude(p.getLongitudeE6() / 1E6);
 	}
 	
 	public void showToast(String message) {
@@ -259,11 +259,11 @@ public class LocustaMapActivityMain extends MapActivity {
 		// Load settings and add new events
 		loadSettingsActivity();
 		clearEvents();
-//		addEvents(loadEvents()); // TODO null pointer
+		addEvents(loadEvents());
 	}
 	
 	private void loadSettingsActivity() {
-		SharedPreferences sp = getSharedPreferences("locusta_settings", MODE_WORLD_WRITEABLE);
+		SharedPreferences sp = getSharedPreferences("locusta_settings", Activity.MODE_WORLD_WRITEABLE);
     	radius = sp.getInt("radius", 100);
     	specificEventTypeId = sp.getInt("idEventType", -1);
 	}
