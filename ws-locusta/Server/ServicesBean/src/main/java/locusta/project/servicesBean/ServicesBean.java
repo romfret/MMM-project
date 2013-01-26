@@ -112,7 +112,7 @@ public class ServicesBean implements Services {
 
 
 		
-		query += "SELECT e "
+		query += "SELECT DISTINCT e "
 				+ "FROM Event e, EventType et " 
 				+ "WHERE (ACOS(COS(" + latitude + " * PI() / 180) * COS(e.latitude * PI() / 180) * COS("
 				+ "e.longitude * PI() / 180 - " + longitude + " * PI() / 180) + ("
@@ -120,7 +120,7 @@ public class ServicesBean implements Services {
 				+ " * 6371000) <= " + radius + " AND "
 				+ "e.endDate > now() AND e.startDate < now()" ;
 		if (eventType != null) {
-			query += " AND " + "e.eventType_id = et._id and et._id = "
+			query += " AND " + "e.eventType.id = et.id and et.id = "
 					+ eventType.getId();
 		}
 		

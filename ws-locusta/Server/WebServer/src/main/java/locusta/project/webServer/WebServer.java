@@ -183,9 +183,11 @@ public class WebServer {
 			}
 
 			System.out.println(who + ": Response body: " + response);
-			t.sendResponseHeaders(200, response.length());
+			byte[] responseHttp = response.getBytes();
+			t.sendResponseHeaders(200, responseHttp.length);
+		
 			OutputStream os = t.getResponseBody();
-			os.write(response.getBytes());
+			os.write(responseHttp);
 			os.close();
 			System.out.println(who + ": Success!");
 
