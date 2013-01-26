@@ -54,7 +54,7 @@ public class AddEventActivity extends Activity {
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int pos, long id) {
-				selectedId = et_ids.indexOf(pos);
+				selectedId = et_ids.get(pos);
 			}
 
 			public void onNothingSelected(AdapterView<?> parent) {
@@ -64,7 +64,7 @@ public class AddEventActivity extends Activity {
 
 	public void ok(View v) {
 		Button b = (Button) findViewById(R.id.okAdd);
-		b.setText("Pz wait...");
+		b.setText("Please wait...");
 		b.setEnabled(false);
 		final Activity self = this;
 		Thread t = new Thread(new Runnable() {
