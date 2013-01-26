@@ -1,0 +1,14 @@
+Importer le projet en tant que projet Eandroid existant.
+Renommer le répertoire en Locusta si ce n'est déjà fait à l'import.
+Vérifier dans les options Android que la variable Build Target Project est bien sur Google APIs 2.2 Level 8.
+Vérifer dans le build path que le package entities du serveur est bien ajouté aux sources et à l'export lors de la compilation.
+
+
+Ajouter une activity d'un autre projet :
+- Sur le projet contenant l'activity à récupérer : aller dans l'onglet android dans les propriétés du projet et cocher la case "is library"
+- Dans le projet où sera importée l'activity : aller dans le même menu et cliquer sur Add puis sélectionner le projet déclaré en temps que librarie
+- Ajouter dans le manifest.xml la dépendance à l'activity.
+			<activity android:name="locusta.project.mapSettings.MapSettings" android:exported="true"></activity>
+
+Exemple de lancement d'activity externe au projet :
+    		Intent intentMapSetings = new Intent(LocustaMapActivityMain.this, locusta.project.mapSettings.MapSettings.class);
