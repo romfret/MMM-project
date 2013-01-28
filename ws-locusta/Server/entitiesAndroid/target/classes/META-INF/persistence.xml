@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	version="2.0">
+	<persistence-unit name="Locusta" transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<validation-mode>AUTO</validation-mode>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="hibernate.ejb.naming_strategy"
+				value="locusta.project.entities.strategyDB.LocustaStrategy" />
+
+			<!-- Vos infos de connexion ici (dans l'url après le port : le nom de 
+				la BDD -->
+			<property name="hibernate.connection.url" value="jdbc:mysql://88.176.4.252:3306/locusta" />
+			<property name="hibernate.connection.password" value="locusta" />
+			<property name="hibernate.connection.username" value="locusta" />
+
+		</properties>
+	</persistence-unit>
+</persistence>
+
