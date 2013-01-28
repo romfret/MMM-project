@@ -1,10 +1,7 @@
 *~
 */target
-*bin/*
-/bin*
-*.setings/*
+bin/
 .settings
-.settings/*
 .project
 .classpath
 */.metadata/*
